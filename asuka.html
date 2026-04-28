@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明日香のもぐもぐダイアリー</title>
+    <!-- Tailwind CSS (デザイン用) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons (アイコン用) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* 可愛いフォントの指定（ブラウザ標準の丸ゴシック系） */
+        body {
+            font-family: 'Hiragino Maru Gothic ProN', 'ヒラギノ丸ゴ ProN W4', 'Vazirmatn', 'Rounded M+ 1c', sans-serif;
+        }
+        /* ふわふわアニメーション */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(-5%); }
+            50% { transform: translateY(0); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-pink-50 text-gray-800 pb-12">
+
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm p-4 sticky top-0 z-10 rounded-b-2xl mb-6 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-pink-500 flex items-center gap-2">
+            <i data-lucide="heart" class="w-6 h-6 text-pink-400 fill-pink-400"></i>
+            明日香のもぐもぐダイアリー
+        </h1>
+        <div class="flex items-center gap-1 bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300">
+            <i data-lucide="star" class="w-4 h-4 text-yellow-500 fill-yellow-500"></i>
+            <span id="points-display" class="font-bold text-yellow-700">0 pt</span>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-4 space-y-6">
+        
+        <!-- キャラクターエリア -->
+        <section id="character-section" class="p-6 rounded-3xl shadow-sm flex flex-col items-center justify-center transition-all duration-300 bg-green-100 text-green-700 border-2 border-white">
+            <div id="character-emoji" class="text-7xl mb-4 animate-bounce-slow hover:animate-none cursor-default">
+                🐰🌸
+            </div>
+            <div class="bg-white px-6 py-3 rounded-2xl shadow-md relative w-full text-center">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[15px] border-b-white"></div>
+                <p id="character-message" class="font-medium text-gray-700">今日も明日香ちゃんの味方だよ！</p>
+            </div>
+        </section>
+
+        <!-- 記録フォーム -->
+        <section class="bg-white p-6 rounded-3xl shadow-sm border border-pink-100">
+            <h2 class="text-lg font-bold text-pink-600 mb-4 flex items-center gap-2">
+                <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                今の気持ちとお菓子を記録
+            </h2>
+            <form id="record-form" class="space-y-5">
+                
+                <!-- 食べた量 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2">どれくらい食べた？</label>
+                    <div class="grid grid-cols-4 gap-2" id="amount-buttons">
+                        <button type="button" data-amount="我慢した" class="amount-btn py-2 px-1 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">我慢した</button>
+                        <button type="button" data-amount="すこし" class="amount-btn py-2 px-1 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">すこし</button>
+                        <button type="button" data-amount="適量" class="amount-btn py-2 px-1 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-pink-400 text-white">適量</button>
+                        <button type="button" data-amount="いっぱい" class="amount-btn py-2 px-1 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">いっぱい</button>
+                    </div>
+                </div>
+
+                <!-- 食べたもの -->
+                <div id="snack-input-container">
+                    <label class="block text-sm font-medium text-gray-600 mb-2">何を食べた？（複数えらべるよ）</label>
+                    <div class="flex flex-wrap gap-2 mb-3" id="snack-buttons">
+                        <button type="button" data-snack="チョコレート" class="snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">チョコレート</button>
+                        <button type="button" data-snack="クッキー" class="snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">クッキー</button>
+                        <button type="button" data-snack="ケーキ" class="snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">ケーキ</button>
+                        <button type="button" data-snack="せんべい" class="snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">せんべい</button>
+                        <button type="button" data-snack="飴" class="snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">飴</button>
+                        <button type="button" data-snack="餅" class="snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">餅</button>
+                        <button type="button" data-snack="その他" class="snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600">その他（自由に記入）</button>
+                    </div>
+                    <input type="text" id="snack-name" placeholder="その他の場合はここに書いてね" class="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-300 bg-gray-50 hidden">
+                </div>
+
+                <!-- 気分 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2">今の気持ちは？（ストレスチェック）</label>
+                    <div class="grid grid-cols-4 gap-2" id="mood-buttons">
+                        <button type="button" data-mood="ハッピー" class="mood-btn py-2 flex flex-col items-center justify-center rounded-xl border-2 transition-all border-transparent bg-gray-50">
+                            <i data-lucide="smile" class="w-5 h-5 mb-1 text-orange-500"></i>
+                            <span class="text-[10px] sm:text-xs font-medium text-gray-500">ハッピー</span>
+                        </button>
+                        <button type="button" data-mood="ふつう" class="mood-btn py-2 flex flex-col items-center justify-center rounded-xl border-2 transition-all border-pink-400 bg-pink-50">
+                            <i data-lucide="coffee" class="w-5 h-5 mb-1 text-green-500"></i>
+                            <span class="text-[10px] sm:text-xs font-medium text-gray-800">ふつう</span>
+                        </button>
+                        <button type="button" data-mood="つかれた" class="mood-btn py-2 flex flex-col items-center justify-center rounded-xl border-2 transition-all border-transparent bg-gray-50">
+                            <i data-lucide="frown" class="w-5 h-5 mb-1 text-blue-500"></i>
+                            <span class="text-[10px] sm:text-xs font-medium text-gray-500">つかれた</span>
+                        </button>
+                        <button type="button" data-mood="ストレス" class="mood-btn py-2 flex flex-col items-center justify-center rounded-xl border-2 transition-all border-transparent bg-gray-50">
+                            <span class="text-xl mb-1 text-red-500">💢</span>
+                            <span class="text-[10px] sm:text-xs font-medium text-gray-500">ストレス</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    記録する！
+                </button>
+            </form>
+        </section>
+
+        <!-- 今日の記録 -->
+        <section>
+            <h3 class="text-md font-bold text-gray-700 mb-3 px-2 flex items-center gap-2">
+                <i data-lucide="award" class="w-5 h-5 text-yellow-500"></i>
+                最近の記録
+            </h3>
+            
+            <div id="records-list" class="space-y-3">
+                <!-- 記録がここに動的に追加されます -->
+            </div>
+            
+            <p id="empty-message" class="text-center text-gray-500 text-sm py-8 bg-white rounded-3xl border border-dashed border-pink-200">
+                まだ記録がないよ。<br>今日のおやつを教えてね！
+            </p>
+        </section>
+
+    </main>
+
+    <script>
+        // --- 状態管理 ---
+        let records = JSON.parse(localStorage.getItem('mogumogu_records')) || [];
+        let points = parseInt(localStorage.getItem('mogumogu_points')) || 0;
+        let currentAmount = '適量';
+        let currentMood = 'ふつう';
+        let selectedSnacks = new Set();
+        let charTimer = null;
+
+        // --- DOM要素の取得 ---
+        const pointsDisplay = document.getElementById('points-display');
+        const recordForm = document.getElementById('record-form');
+        const snackNameInput = document.getElementById('snack-name');
+        const snackInputContainer = document.getElementById('snack-input-container');
+        const recordsList = document.getElementById('records-list');
+        const emptyMessage = document.getElementById('empty-message');
+        
+        // キャラクター関連
+        const charSection = document.getElementById('character-section');
+        const charEmoji = document.getElementById('character-emoji');
+        const charMessage = document.getElementById('character-message');
+
+        // ボタン群
+        const amountBtns = document.querySelectorAll('.amount-btn');
+        const moodBtns = document.querySelectorAll('.mood-btn');
+        const snackBtns = document.querySelectorAll('.snack-btn');
+
+        // --- 初期化処理 ---
+        function init() {
+            lucide.createIcons();
+            updatePointsDisplay();
+            renderRecords();
+            updateAmountButtons();
+            updateMoodButtons();
+            updateSnackButtons();
+        }
+
+        // --- UI更新関数 ---
+
+        // ポイント表示の更新
+        function updatePointsDisplay() {
+            pointsDisplay.textContent = `${points} pt`;
+            localStorage.setItem('mogumogu_points', points.toString());
+        }
+
+        // 食べた量ボタンの表示更新
+        function updateAmountButtons() {
+            amountBtns.forEach(btn => {
+                const amount = btn.getAttribute('data-amount');
+                btn.className = 'amount-btn py-2 px-1 text-xs sm:text-sm rounded-xl font-medium transition-colors ' + 
+                    (currentAmount === amount 
+                        ? (amount === '我慢した' ? 'bg-orange-400 text-white' : amount === 'いっぱい' ? 'bg-blue-400 text-white' : 'bg-pink-400 text-white')
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200');
+            });
+
+            // 「我慢した」場合は入力欄を隠す
+            if (currentAmount === '我慢した') {
+                snackInputContainer.style.display = 'none';
+                snackNameInput.removeAttribute('required');
+            } else {
+                snackInputContainer.style.display = 'block';
+                if (selectedSnacks.has('その他')) {
+                    snackNameInput.setAttribute('required', 'required');
+                }
+            }
+        }
+
+        // おやつボタンの表示更新
+        function updateSnackButtons() {
+            snackBtns.forEach(btn => {
+                const snack = btn.getAttribute('data-snack');
+                if (selectedSnacks.has(snack)) {
+                    btn.className = 'snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-pink-400 text-white shadow-sm';
+                } else {
+                    btn.className = 'snack-btn py-2 px-3 text-xs sm:text-sm rounded-xl font-medium transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200';
+                }
+            });
+
+            // 「その他」が選ばれている場合は入力欄を表示
+            if (selectedSnacks.has('その他')) {
+                snackNameInput.classList.remove('hidden');
+                snackNameInput.setAttribute('required', 'required');
+            } else {
+                snackNameInput.classList.add('hidden');
+                snackNameInput.removeAttribute('required');
+            }
+        }
+
+        // 気分ボタンの表示更新
+        function updateMoodButtons() {
+            moodBtns.forEach(btn => {
+                const mood = btn.getAttribute('data-mood');
+                const isSelected = currentMood === mood;
+                
+                // ボタン全体の枠線と背景
+                btn.className = `mood-btn py-2 flex flex-col items-center justify-center rounded-xl border-2 transition-all ${
+                    isSelected ? 'border-pink-400 bg-pink-50' : 'border-transparent bg-gray-50 hover:bg-gray-100'
+                }`;
+                
+                // テキストの色
+                const span = btn.querySelector('span:last-child');
+                span.className = `text-[10px] sm:text-xs font-medium ${isSelected ? 'text-gray-800' : 'text-gray-500'}`;
+            });
+        }
+
+        // キャラクターの表情更新
+        function setCharacterState(moodType) {
+            clearTimeout(charTimer);
+            
+            // クラスをリセット
+            charSection.classList.remove('bg-green-100', 'text-green-700', 'bg-pink-100', 'text-pink-700', 'bg-blue-100', 'text-blue-700', 'bg-orange-100', 'text-orange-700');
+
+            if (moodType === 'happy') {
+                charEmoji.textContent = '🐰✨';
+                charMessage.textContent = 'やったー！明日香ちゃん、えらいっ！';
+                charSection.classList.add('bg-pink-100', 'text-pink-700');
+            } else if (moodType === 'worried') {
+                charEmoji.textContent = '🐰💦';
+                charMessage.textContent = 'おつかれさま。無理しないで、リラックスしようね。';
+                charSection.classList.add('bg-blue-100', 'text-blue-700');
+            } else if (moodType === 'proud') {
+                charEmoji.textContent = '🐰💖';
+                charMessage.textContent = 'すごい！我慢できたね！その調子！';
+                charSection.classList.add('bg-orange-100', 'text-orange-700');
+            } else {
+                charEmoji.textContent = '🐰🌸';
+                charMessage.textContent = '今日も明日香ちゃんの味方だよ！';
+                charSection.classList.add('bg-green-100', 'text-green-700');
+            }
+
+            // 4秒後に元に戻す
+            if (moodType !== 'normal') {
+                charTimer = setTimeout(() => {
+                    setCharacterState('normal');
+                }, 4000);
+            }
+        }
+
+        // 記録リストの描画
+        function renderRecords() {
+            localStorage.setItem('mogumogu_records', JSON.stringify(records));
+            recordsList.innerHTML = '';
+
+            if (records.length === 0) {
+                emptyMessage.style.display = 'block';
+                recordsList.style.display = 'none';
+            } else {
+                emptyMessage.style.display = 'none';
+                recordsList.style.display = 'block';
+
+                // 最新の5件を表示
+                records.slice(0, 5).forEach(record => {
+                    const amountClass = record.amount === '我慢した' ? 'bg-orange-100 text-orange-700' :
+                                      record.amount === 'いっぱい' ? 'bg-blue-100 text-blue-700' :
+                                      'bg-pink-100 text-pink-700';
+
+                    const item = document.createElement('div');
+                    item.className = 'bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between';
+                    item.innerHTML = `
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-xs text-gray-400">${record.date}</span>
+                                <span class="text-xs px-2 py-0.5 rounded-full font-medium ${amountClass}">${record.amount}</span>
+                                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">きもち: ${record.mood}</span>
+                            </div>
+                            <p class="font-bold text-gray-700">${record.snackName}</p>
+                        </div>
+                        <button onclick="deleteRecord(${record.id})" class="p-2 text-gray-300 hover:text-red-400 transition-colors">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    `;
+                    recordsList.appendChild(item);
+                });
+                // 動的に追加したアイコンを描画
+                lucide.createIcons();
+            }
+        }
+
+        // --- イベントリスナー ---
+
+        // 食べた量ボタンのクリック
+        amountBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                currentAmount = e.currentTarget.getAttribute('data-amount');
+                updateAmountButtons();
+            });
+        });
+
+        // 気分ボタンのクリック
+        moodBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                currentMood = e.currentTarget.getAttribute('data-mood');
+                updateMoodButtons();
+            });
+        });
+
+        // おやつボタンのクリック
+        snackBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const snack = e.currentTarget.getAttribute('data-snack');
+                // 選択状態を切り替え
+                if (selectedSnacks.has(snack)) {
+                    selectedSnacks.delete(snack);
+                } else {
+                    selectedSnacks.add(snack);
+                }
+                updateSnackButtons();
+            });
+        });
+
+        // フォーム送信（記録追加）
+        recordForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            let finalSnackName = '';
+            if (currentAmount !== '我慢した') {
+                // 何も選ばれていない場合
+                if (selectedSnacks.size === 0) {
+                    charEmoji.textContent = '🐰💦';
+                    charMessage.textContent = '何を食べたか教えてほしいな！';
+                    charSection.className = 'p-6 rounded-3xl shadow-sm flex flex-col items-center justify-center transition-all duration-300 bg-blue-100 text-blue-700 border-2 border-white';
+                    
+                    clearTimeout(charTimer);
+                    charTimer = setTimeout(() => setCharacterState('normal'), 4000);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+
+                // 選択されたものをカンマ区切りで結合
+                let snacksArr = Array.from(selectedSnacks).filter(s => s !== 'その他');
+                if (selectedSnacks.has('その他')) {
+                    const otherText = snackNameInput.value.trim();
+                    if (!otherText) return;
+                    snacksArr.push(otherText);
+                }
+                finalSnackName = snacksArr.join('、');
+            }
+
+            const now = new Date();
+            const dateStr = `${now.getMonth() + 1}月${now.getDate()}日 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            const newRecord = {
+                id: Date.now(),
+                date: dateStr,
+                snackName: currentAmount === '我慢した' ? 'おやつ我慢！' : finalSnackName,
+                amount: currentAmount,
+                mood: currentMood
+            };
+
+            // 先頭に追加
+            records.unshift(newRecord);
+            
+            // フォームのリセット
+            selectedSnacks.clear();
+            updateSnackButtons();
+            snackNameInput.value = '';
+
+            // ポイントとキャラクターの反応
+            if (currentAmount === '我慢した') {
+                points += 5;
+                setCharacterState('proud');
+            } else if (currentAmount === 'すこし' || currentAmount === '適量') {
+                points += 2;
+                setCharacterState('happy');
+            } else if (currentAmount === 'いっぱい') {
+                setCharacterState('worried');
+            }
+
+            updatePointsDisplay();
+            renderRecords();
+        });
+
+        // 記録の削除（グローバル関数として定義）
+        window.deleteRecord = function(id) {
+            records = records.filter(r => r.id !== id);
+            renderRecords();
+        };
+
+        // 実行
+        init();
+
+    </script>
+</body>
+</html>
