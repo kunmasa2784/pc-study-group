@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>明日香のラジオ体操</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #FFF0F5 0%, #FFF8E7 50%, #F0F8FF 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #3a3a3a;
+  }
+
+  .app {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    padding: 24px 16px 16px;
+    position: relative;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    color: #FF6B9D;
+    text-shadow: 2px 2px 0px #FFD1E8;
+    letter-spacing: 1px;
+  }
+
+  .header .subtitle {
+    font-size: 14px;
+    color: #FF9CBB;
+    margin-top: 4px;
+  }
+
+  .header .deco {
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 6px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* ストリーク＆スタッツ */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    flex: 1;
+    background: white;
+    border-radius: 20px;
+    padding: 14px 10px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(255,107,157,0.12);
+    border: 2px solid #FFD1E8;
+  }
+
+  .stat-card .val {
+    font-size: 26px;
+    font-weight: 900;
+    color: #FF6B9D;
+    line-height: 1;
+  }
+
+  .stat-card .label {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  /* ステップカード */
+  .step-card {
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 20px rgba(255,107,157,0.1);
+    border: 2px solid #FFE4EF;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .step-card:active {
+    transform: scale(0.98);
+  }
+
+  .step-card.active {
+    border-color: #FF6B9D;
+    box-shadow: 0 8px 28px rgba(255,107,157,0.25);
+  }
+
+  .step-card.done {
+    background: linear-gradient(135deg, #FFF0F8, #FFF8F0);
+  }
+
+  .step-card .step-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .step-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+
+  .step-card.active .step-icon {
+    animation: wiggle 0.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes wiggle {
+    from { transform: rotate(-8deg) scale(1.05); }
+    to { transform: rotate(8deg) scale(1.1); }
+  }
+
+  .step-info { flex: 1; }
+
+  .step-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: #FFB3CF;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .step-name {
+    font-size: 17px;
+    font-weight: 900;
+    color: #3a3a3a;
+    line-height: 1.2;
+  }
+
+  .step-desc {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 2px;
+  }
+
+  .step-time {
+    font-size: 13px;
+    font-weight: 700;
+    color: #FF9CBB;
+    background: #FFF0F5;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  /* プログレスバー */
+  .progress-wrap {
+    margin-top: 12px;
+    height: 8px;
+    background: #FFE4EF;
+    border-radius: 4px;
+    overflow: hidden;
+    display: none;
+  }
+
+  .step-card.active .progress-wrap { display: block; }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FF6B9D, #FFB3CF);
+    border-radius: 4px;
+    transition: width 1s linear;
+  }
+
+  /* チェックマーク */
+  .check-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    background: #FF6B9D;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
+  }
+
+  .step-card.done .check-badge { display: flex; }
+
+  /* メインボタン */
+  .main-btn {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-top: 8px;
+    letter-spacing: 1px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .main-btn:active { transform: scale(0.97); }
+
+  .btn-start {
+    background: linear-gradient(135deg, #FF6B9D, #FF9CBB);
+    color: white;
+    box-shadow: 0 6px 20px rgba(255,107,157,0.4);
+  }
+
+  .btn-stop {
+    background: linear-gradient(135deg, #FFB347, #FFD166);
+    color: white;
+    box-shadow: 0 6px 20px rgba(255,179,71,0.4);
+  }
+
+  .btn-reset {
+    background: white;
+    color: #FF6B9D;
+    border: 2px solid #FFD1E8 !important;
+    box-shadow: 0 4px 12px rgba(255,107,157,0.1);
+    font-size: 15px;
+    padding: 14px;
+    margin-top: 8px;
+  }
+
+  /* 完了バナー */
+  .complete-banner {
+    display: none;
+    background: linear-gradient(135deg, #FF6B9D, #FFB3CF);
+    color: white;
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(255,107,157,0.3);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .complete-banner .congrats {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+
+  .complete-banner h2 {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+
+  .complete-banner p {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  /* カレンダー */
+  .calendar-section {
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    margin-top: 16px;
+    border: 2px solid #FFE4EF;
+    box-shadow: 0 4px 12px rgba(255,107,157,0.08);
+  }
+
+  .cal-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: #FF6B9D;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .cal-day-label {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ccc;
+    padding-bottom: 4px;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ccc;
+    background: #fafafa;
+    border: 2px solid transparent;
+  }
+
+  .cal-day.done {
+    background: linear-gradient(135deg, #FF6B9D, #FFB3CF);
+    color: white;
+    border-color: transparent;
+  }
+
+  .cal-day.today {
+    border-color: #FF6B9D;
+    color: #FF6B9D;
+  }
+
+  /* タイマー表示 */
+  .timer-display {
+    display: none;
+    text-align: center;
+    font-size: 48px;
+    font-weight: 900;
+    color: #FF6B9D;
+    margin: 12px 0;
+    text-shadow: 2px 2px 0 #FFD1E8;
+    letter-spacing: 2px;
+  }
+
+  .timer-display.visible { display: block; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <h1>🌸 明日香のラジオ体操 🌸</h1>
+    <div class="subtitle">毎日元気に、一緒にやろうね！</div>
+    <div class="deco">✨ 🌈 ✨</div>
+  </div>
+
+  <!-- スタッツ -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="val" id="streak-val">0</div>
+      <div class="label">🔥 連続日数</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" id="total-val">0</div>
+      <div class="label">⭐ 合計回数</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" id="today-steps">0/8</div>
+      <div class="label">🤸 今日の進捗</div>
+    </div>
+  </div>
+
+  <!-- 完了バナー -->
+  <div class="complete-banner" id="complete-banner">
+    <div class="congrats">🎉</div>
+    <h2>おめでとう、明日香！</h2>
+    <p>ラジオ体操を完了したよ！えらい！✨<br>体がぽかぽかしてきたかな？😊</p>
+  </div>
+
+  <!-- タイマー -->
+  <div class="timer-display" id="timer-display">00:00</div>
+
+  <!-- 体操ステップ -->
+  <div id="steps-container"></div>
+
+  <!-- ボタン -->
+  <button class="main-btn btn-start" id="main-btn" onclick="toggleStart()">▶ はじめる！</button>
+  <button class="main-btn btn-reset" id="reset-btn" onclick="resetAll()" style="display:none">やり直す</button>
+
+  <!-- カレンダー -->
+  <div class="calendar-section">
+    <div class="cal-title">📅 がんばりカレンダー</div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+
+</div>
+
+<script>
+const STEPS = [
+  { name: "深呼吸", desc: "大きく息を吸って吐こう", icon: "🌬️", color: "#E3F4FF", sec: 8 },
+  { name: "腕を振って足踏み", desc: "リズムよく！はい1・2・3！", icon: "🚶", color: "#FFF0E3", sec: 12 },
+  { name: "腕の回旋運動", desc: "グルグル大きく回そう", icon: "💪", color: "#FFE3F0", sec: 10 },
+  { name: "胸の運動", desc: "胸をぐっと開こう", icon: "🦋", color: "#E3FFE8", sec: 12 },
+  { name: "背伸びの運動", desc: "つま先立ちでグーンと伸びて", icon: "🌿", color: "#FFF8E3", sec: 10 },
+  { name: "体を横に曲げる", desc: "左右にゆっくり伸ばそう", icon: "🌈", color: "#F0E3FF", sec: 12 },
+  { name: "体を前後に曲げる", desc: "腰をしっかり使って", icon: "🌸", color: "#FFE3E3", sec: 12 },
+  { name: "整理体操（深呼吸）", desc: "お疲れさまでした！", icon: "✨", color: "#E3FFFC", sec: 8 },
+];
+
+let state = {
+  running: false,
+  currentStep: -1,
+  stepTimer: null,
+  stepElapsed: 0,
+  doneDays: JSON.parse(localStorage.getItem('doneDays') || '[]'),
+  totalCount: parseInt(localStorage.getItem('totalCount') || '0'),
+  completedSteps: 0,
+  sessionDone: false,
+};
+
+function loadStreak() {
+  const days = state.doneDays;
+  if (!days.length) return 0;
+  let streak = 0;
+  let d = new Date();
+  while (true) {
+    const s = d.toISOString().slice(0,10);
+    if (days.includes(s)) { streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  return streak;
+}
+
+function todayStr() { return new Date().toISOString().slice(0,10); }
+
+function updateStats() {
+  document.getElementById('streak-val').textContent = loadStreak();
+  document.getElementById('total-val').textContent = state.totalCount;
+  document.getElementById('today-steps').textContent = state.completedSteps + '/8';
+}
+
+function renderSteps() {
+  const c = document.getElementById('steps-container');
+  c.innerHTML = '';
+  STEPS.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'step-card' + (i === state.currentStep ? ' active' : '') + (i < state.completedSteps ? ' done' : '');
+    div.id = 'step-' + i;
+    div.innerHTML = `
+      <div class="check-badge">✓</div>
+      <div class="step-top">
+        <div class="step-icon" style="background:${s.color}">${s.icon}</div>
+        <div class="step-info">
+          <div class="step-num">STEP ${i+1}</div>
+          <div class="step-name">${s.name}</div>
+          <div class="step-desc">${s.desc}</div>
+        </div>
+        <div class="step-time">${s.sec}秒</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-fill" id="prog-${i}" style="width:0%"></div>
+      </div>
+    `;
+    c.appendChild(div);
+  });
+}
+
+function toggleStart() {
+  if (state.sessionDone) return;
+  if (!state.running) {
+    startSession();
+  } else {
+    pauseSession();
+  }
+}
+
+function startSession() {
+  state.running = true;
+  document.getElementById('main-btn').textContent = '⏸ いったん休憩';
+  document.getElementById('main-btn').className = 'main-btn btn-stop';
+  document.getElementById('reset-btn').style.display = 'block';
+  document.getElementById('timer-display').classList.add('visible');
+  if (state.currentStep < 0) {
+    state.currentStep = 0;
+    state.stepElapsed = 0;
+  }
+  runStep();
+}
+
+function pauseSession() {
+  state.running = false;
+  clearInterval(state.stepTimer);
+  document.getElementById('main-btn').textContent = '▶ 続きから！';
+  document.getElementById('main-btn').className = 'main-btn btn-start';
+}
+
+function runStep() {
+  const step = STEPS[state.currentStep];
+  renderSteps();
+  const el = document.getElementById('step-' + state.currentStep);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  clearInterval(state.stepTimer);
+  state.stepTimer = setInterval(() => {
+    if (!state.running) { clearInterval(state.stepTimer); return; }
+    state.stepElapsed++;
+    const pct = Math.min((state.stepElapsed / step.sec) * 100, 100);
+    const pg = document.getElementById('prog-' + state.currentStep);
+    if (pg) pg.style.width = pct + '%';
+
+    const rem = Math.max(step.sec - state.stepElapsed, 0);
+    const mm = String(Math.floor(rem/60)).padStart(2,'0');
+    const ss = String(rem%60).padStart(2,'0');
+    document.getElementById('timer-display').textContent = mm+':'+ss;
+
+    if (state.stepElapsed >= step.sec) {
+      clearInterval(state.stepTimer);
+      state.completedSteps = state.currentStep + 1;
+      updateStats();
+      state.currentStep++;
+      state.stepElapsed = 0;
+      if (state.currentStep < STEPS.length) {
+        runStep();
+      } else {
+        completeSession();
+      }
+    }
+  }, 1000);
+}
+
+function completeSession() {
+  state.running = false;
+  state.sessionDone = true;
+  state.totalCount++;
+  const today = todayStr();
+  if (!state.doneDays.includes(today)) state.doneDays.push(today);
+  localStorage.setItem('doneDays', JSON.stringify(state.doneDays));
+  localStorage.setItem('totalCount', state.totalCount.toString());
+
+  renderSteps();
+  updateStats();
+  renderCalendar();
+  document.getElementById('complete-banner').style.display = 'block';
+  document.getElementById('main-btn').style.display = 'none';
+  document.getElementById('timer-display').textContent = '完了！🎊';
+}
+
+function resetAll() {
+  clearInterval(state.stepTimer);
+  state.running = false;
+  state.currentStep = -1;
+  state.stepElapsed = 0;
+  state.completedSteps = 0;
+  state.sessionDone = false;
+  document.getElementById('complete-banner').style.display = 'none';
+  document.getElementById('main-btn').style.display = 'block';
+  document.getElementById('main-btn').textContent = '▶ はじめる！';
+  document.getElementById('main-btn').className = 'main-btn btn-start';
+  document.getElementById('reset-btn').style.display = 'none';
+  document.getElementById('timer-display').textContent = '00:00';
+  document.getElementById('timer-display').classList.remove('visible');
+  updateStats();
+  renderSteps();
+}
+
+function renderCalendar() {
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  const labels = ['日','月','火','水','木','金','土'];
+  labels.forEach(l => {
+    const d = document.createElement('div');
+    d.className = 'cal-day-label';
+    d.textContent = l;
+    grid.appendChild(d);
+  });
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  for (let i=0; i<firstDay; i++) {
+    const blank = document.createElement('div');
+    grid.appendChild(blank);
+  }
+
+  for (let d=1; d<=daysInMonth; d++) {
+    const el = document.createElement('div');
+    const dayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = d === today.getDate();
+    const isDone = state.doneDays.includes(dayStr);
+    el.className = 'cal-day' + (isDone ? ' done' : '') + (isToday && !isDone ? ' today' : '');
+    el.textContent = d;
+    grid.appendChild(el);
+  }
+}
+
+// 初期化
+renderSteps();
+updateStats();
+renderCalendar();
+</script>
+</body>
+</html>
