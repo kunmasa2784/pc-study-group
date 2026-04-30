@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ふるさとからの小包</title>
+    <!-- Tailwind CSSの読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Serif JP (明朝体) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Noto Serif JP"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            pink: '#f9a8d4', // 春の桜をイメージ
+                            green: '#86efac', // 初夏の若葉をイメージ
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 全角スペースによるインデントを維持するための設定 */
+        p {
+            text-indent: 1em;
+        }
+        /* 手紙部分やタイトルはインデントしない */
+        .no-indent p {
+            text-indent: 0;
+        }
+        h1 {
+            text-indent: 0;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-serif antialiased selection:bg-pink-100 selection:text-pink-900">
+
+    <!-- 季節感を表すカラフルなトップライン -->
+    <div class="h-2 w-full bg-gradient-to-r from-brand-pink via-white to-brand-green"></div>
+
+    <main class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+        <article class="bg-stone-50">
+            
+            <!-- タイトルエリア -->
+            <header class="mb-16 text-center">
+                <div class="inline-block mb-4">
+                    <span class="text-xs tracking-widest text-stone-400 uppercase font-sans">Short Story</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-wide text-stone-900 mb-6 leading-tight">
+                    ふるさとからの小包
+                </h1>
+                <div class="w-12 h-px bg-stone-300 mx-auto"></div>
+            </header>
+
+            <!-- 本文エリア -->
+            <div class="text-lg leading-loose space-y-8 tracking-wide">
+                
+                <p>見知らぬ土地へ嫁いで三年が過ぎた。</p>
+
+                <p>明日香の職場は、かつて都があった平城宮跡だ。観光案内の仕事にも就いて三年。県外や海外から訪れる人々に笑顔で歴史を語り、案内の際にはこの土地特有の柔らかいイントネーションも自然に織り交ぜられるようになった。道に迷うこともなくなり、近所の人とも挨拶を交わす。それでも、観光客が去った後の静けさの中で、ふと透明な壁のようなものを感じて、自分がまだ「よそ者」であることを突きつけられるような気がしていた。</p>
+
+                <p>桜もすっかり葉桜に変わり、広大な平城京の跡地に吹き抜ける風に初夏の気配が混じり始めた四月下旬の夕暮れ。仕事と買い物を終えた明日香は、足早に家路につきながら小さくため息をついた。夫はここ数ヶ月、仕事の重圧から心を病み、休日は心療内科のクリニックへ通う日々が続いている。本来は優しい彼だが、今は家でも俯きがちだ。口数の減った夫を懸命に支えようと気を張る毎日。春の行楽シーズンを迎え、世間が新しい季節の始まりに浮き立つ中、自分だけが暗いトンネルに取り残されたような、どうしようもない孤独を感じる夜があるのだ。三年という月日は、新しい場所に根を張るには短すぎ、故郷の記憶を鮮明に保つには長すぎるのかもしれない。</p>
+
+                <p>少し肌寒いアパートの部屋の鍵を開けると、玄関に不在票が入っていた。差出人の欄を見て、明日香の胸が小さく跳ねる。急いで再配達を頼むと、ほどなくして少し歪な形の段ボール箱が届いた。</p>
+
+                <p>ガムテープを剥がすと、懐かしい土の匂いがふわりと立ち上った。</p>
+
+                <p>箱の中には、新聞紙にくるまれた泥付きの筍や新玉ねぎ、不揃いな形の甘夏、そして明日香が好きだった地元の銘菓が、隙間を埋めるようにぎっしりと詰め込まれていた。その一番上に、見慣れた丸みを帯びた字で書かれた封筒がぽつんと置かれている。母、さちよからの手紙だった。</p>
+
+                <!-- 手紙のセクション（装飾を変えて視覚的に区別） -->
+                <div class="no-indent my-12 relative">
+                    <div class="absolute -left-4 top-0 bottom-0 w-1 bg-brand-pink rounded-full opacity-70"></div>
+                    <div class="bg-white p-8 rounded-lg shadow-sm border border-stone-100 text-stone-700 italic">
+                        <p class="mb-4">『春めいてきましたが、体調は崩していませんか。お父さんが春野菜をたくさんもらったので、少しですが送ります。』</p>
+                        <p>『仕事と家事の両立で、無理をしていないか心配です。好きだったお菓子も入れたけれど、ストレスがたまるといって、あまりお菓子は食べないようにね。でも、遠くに嫁いだ娘にできることはこれくらいだから。しっかりご飯を食べて、風邪などひかないようにね。』</p>
+                    </div>
+                </div>
+
+                <p>相変わらずの、少しよそ行きな、でも温かい文章。明日香は便箋を両手で持ち、その先を目で追った。</p>
+
+                <p>――遠くに嫁いだ娘にできることはこれくらいだから。</p>
+
+                <p>その一文を読んだ瞬間、明日香の視界がふいに歪んだ。ぽたり、と便箋の端に透明な雫が落ちる。</p>
+
+                <p>電話越しの声のトーンから、母は明日香が何かをひとりで抱え込んでいることを、鋭く察していたのかもしれない。多くを語らない母だが、「元気でやってるならそれでいい」と言いつつも、この重たい段ボール箱を小さな郵便局まで運び、隙間がないように丁寧に荷造りをしてくれたのだ。その小さく丸い背中を想像すると、張り詰めていた心の糸がふっと緩み、胸の奥がきゅっと締め付けられた。</p>
+
+                <p>私は、ひとりじゃない。</p>
+
+                <p>遠く離れた場所から、いつも私を想い、見守ってくれている人がいる。この不格好な春の野菜たちは、言葉の代わりに届けられた母の祈りそのものだった。</p>
+
+                <p>明日香は手の甲で涙を乱暴に拭うと、立ち上がって袖を捲った。</p>
+
+                <p class="font-semibold text-stone-900 mt-8 mb-6">「よし、今日は筍ご飯にしよう」</p>
+
+                <p>真治も、土の香りがする筍ご飯なら、少しは箸を進めてくれるかもしれない。</p>
+
+                <p>声に出してみると、部屋の少し冷たい空気が柔らかくなった気がした。泥のついた筍を洗う水の音に、もう寂しさはない。コトコトと鍋が煮える音とともに、故郷の春の温もりが、明日香と夫の新しい居場所を優しく満たしていった。</p>
+
+            </div>
+            
+            <!-- 終端の飾り -->
+            <div class="mt-20 flex justify-center space-x-2">
+                <div class="w-1.5 h-1.5 rounded-full bg-brand-pink opacity-50"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-brand-green opacity-50"></div>
+            </div>
+
+        </article>
+    </main>
+
+</body>
+</html>
