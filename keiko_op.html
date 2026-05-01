@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明日を信じる白衣の誓い</title>
+    <!-- Google Fontsの読み込み: 本文用に明朝体、見出し・強調用にゴシック体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* 全体の基本設定 */
+        body {
+            background-color: #f4f7f6; /* 目に優しい薄いグレーの背景 */
+            color: #333333;
+            font-family: 'Noto Serif JP', serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 40px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 記事のコンテナ（ジャーナル風） */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 70px 80px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+            /* 上部にアクセントボーダー */
+            border-top: 8px solid #3498db;
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .article-container {
+                padding: 40px 25px;
+            }
+        }
+
+        /* 見出し */
+        h1 {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #2c3e50;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #e74c3c;
+            border-radius: 3px;
+        }
+
+        /* 段落 */
+        p {
+            margin-bottom: 1.6em;
+            font-size: 1.05rem;
+            letter-spacing: 0.04em;
+            text-align: justify;
+        }
+
+        /* セリフ・心の声 */
+        .dialogue {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 600;
+            color: #2980b9;
+            margin: 25px 0;
+        }
+
+        .inner-voice {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #16a085;
+            font-weight: 600;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        /* 箇条書き（リスト）の共通スタイル */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+            margin: 40px 0;
+        }
+
+        .styled-list li {
+            margin-bottom: 20px;
+            padding: 25px;
+            background: #fbfcfc;
+            border-left: 6px solid;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.7;
+        }
+
+        .styled-list strong {
+            display: block;
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            border-bottom: 1px solid #eeeeee;
+            padding-bottom: 8px;
+        }
+
+        /* 現場のリアル（過酷な現実）リストのカラーリング */
+        .list-realities li:nth-child(1) { border-color: #e74c3c; } /* 赤：激務 */
+        .list-realities li:nth-child(2) { border-color: #8e44ad; } /* 紫：恐怖 */
+        .list-realities li:nth-child(3) { border-color: #f39c12; } /* 橙：疲労 */
+        .list-realities li:nth-child(4) { border-color: #34495e; } /* 紺：対価 */
+        .list-realities li:nth-child(5) { border-color: #7f8c8d; } /* 灰：過酷 */
+
+        /* 回想シーンのセクション */
+        .memory-section {
+            padding: 40px;
+            background: #fffbf5; /* 温かみのあるアイボリー */
+            border-radius: 12px;
+            margin: 50px 0;
+            border: 1px solid #fbeee0;
+            position: relative;
+        }
+
+        .memory-section::before {
+            content: "✦ ✦ ✦";
+            display: block;
+            text-align: center;
+            color: #e67e22;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            letter-spacing: 10px;
+        }
+
+        /* 宝物の思い出リストのカラーリング */
+        .list-memories li:nth-child(1) { border-color: #3498db; background: #ffffff;} /* 青：実習室 */
+        .list-memories li:nth-child(2) { border-color: #e67e22; background: #ffffff;} /* 橙：図書室 */
+        .list-memories li:nth-child(3) { border-color: #2ecc71; background: #ffffff;} /* 緑：歓喜 */
+
+        /* 強調ボックス（クライマックス） */
+        .highlight-box {
+            background: #edf7fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 40px 0;
+            text-align: center;
+            border: 1px solid #d4ebf2;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #2980b9;
+            font-weight: 700;
+            font-family: 'Noto Sans JP', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        /* 区切り線 */
+        hr {
+            border: 0;
+            height: 1px;
+            background: #e0e0e0;
+            margin: 50px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <article class="article-container">
+        <h1>明日を信じる白衣の誓い</h1>
+
+        <p>新宿のネオンが遠く窓ガラスを彩る、四畳半と少しのワンルーム。<br>
+        実家を出て初めての一人暮らしは、自由というよりは、圧倒的な孤独と疲労の匂いがした。</p>
+
+        <p>桂子は、小さなローテーブルの上に置かれたペラペラの紙切れを見つめ、深いため息をついた。<br>
+        初めて手にした、看護師としての給与明細。<br>
+        そこに印字された手取り額は、彼女の想像をはるかに下回る、残酷な数字だった。</p>
+
+        <p class="dialogue">「……嘘でしょ。あんなに、命削って働いてるのに」</p>
+
+        <p>誰もいない部屋に、ぽつりと愚痴がこぼれる。<br>
+        35歳の春。晴れて国家試験に合格し、希望通り手術室（オペ室）への配属を勝ち取った。しかし、この1ヶ月で彼女が直面した現実は、理想の白衣の天使とはかけ離れた、壮絶な日々だった。</p>
+
+        <p>桂子の心を折ろうとする「現場のリアル」は、次々と彼女に襲いかかっていた。</p>
+
+        <ul class="styled-list list-realities">
+            <li><strong>終わりのない激務</strong> 手術室は一分一秒を争う戦場。張り詰めた緊張の中、長時間立ちっぱなしで何十種類もの器具を瞬時に判断し、手渡す。息をつく暇すら与えられない。</li>
+            <li><strong>命の現場の恐怖</strong> 教科書で見たものとは違う、生身の人間から流れ出る鮮血。モニターが刻む心拍音。少しのミスが命に直結するというプレッシャーが、常に胃を締め付ける。</li>
+            <li><strong>限界を超える疲労</strong> 重い術衣やマスク、手袋に身を包み、無影灯の熱気に晒され続ける。帰りの電車では座る気力もなく、部屋に着く頃には足が棒のように硬直している。</li>
+            <li><strong>見合わない対価</strong> この疲労困憊と引き換えに手にした、がっくりするほど安い初任給。</li>
+            <li><strong>過酷な裏側</strong> 血液や体液、排泄物。覚悟はしていたものの、生々しい現場の片付けや器材洗浄の過酷さは、予想を遥かに超えて「汚く」、そして重労働だった。</li>
+        </ul>
+
+        <p class="dialogue">「私、何やってるんだろう……」</p>
+
+        <p>疲れ果てた体をラグマットに投げ出し、目を閉じる。<br>
+        消毒液の匂いが鼻の奥から離れない。逃げ出したい。もう無理かもしれない。弱音が心を支配しそうになったその時――。</p>
+
+        <p>ふと、枕元に飾ってある写真立てが目に入った。<br>
+        そこには、桜の木の下で、満面の笑みでピースサインをする70名の仲間たちと、その中央で少し照れくさそうに笑う桂子の姿があった。</p>
+
+        <div class="memory-section">
+            <p>――32歳。これまでの人生をもう一度やり直そう。 そう決意して、看護学校の門を叩いた日のことを思い出す。</p>
+
+            <p>周りは一回りも年下の、18歳や20歳の若者ばかり。最初は「おばさん扱いされるのでは」と恐れ、壁を作っていたのは桂子の方だった。しかし、命を扱う看護への道は、年齢の壁などたやすく打ち砕くほど過酷だった。</p>
+
+            <p>あの3年間は、桂子の人生において何にも代えがたい「宝物」だ。</p>
+
+            <ul class="styled-list list-memories">
+                <li><strong>共に泣いた実習室</strong> 厳しい指導教官に怒られ、実習準備室で泣き崩れた19歳の同級生の背中を、桂子は何度もさすった。逆に、膨大な課題に押しつぶされそうになった桂子に、「桂子さん、一緒に徹夜しよう！」と缶コーヒーを買ってきてくれたのは彼女らだった。</li>
+                <li><strong>熱気あふれる図書室</strong> 国家試験前、70人全員で図書室にこもり、教え合った日々。「絶対全員で受かるんだ！」という誰かの叫びに、桂子も夢中で頷いた。年齢なんて関係ない、同じ目標に向かって泥臭くもがく、最高の戦友だった。</li>
+                <li><strong>歓喜の瞬間</strong> 35歳の春、合格発表の掲示板。自分の番号を見つけた瞬間、年下の仲間たちが「桂子さーん！！」と泣きながら抱きついてきた。あの時の彼らの涙の温もりと、自分の頬を伝った熱い涙を、一生忘れることはない。</li>
+            </ul>
+
+            <p class="inner-voice">『桂子さん、あんなに頑張ったじゃない！』<br>
+            『私たち、命を救うプロになるって誓ったでしょ！』</p>
+        </div>
+
+        <p>写真の中の仲間たちの笑顔が、今の桂子に語りかけてくるようだった。<br>
+        目から、一粒の涙がこぼれ落ちた。<br>
+        それは、絶望の涙ではなく、心の奥底でくすぶっていた熱い炎に再び火が灯った証だった。</p>
+
+        <p>桂子は起き上がり、両手で思い切り自分の頬を叩いた。<br>
+        パンッ！という乾いた音が、狭い部屋に響く。</p>
+
+        <p class="dialogue">「……そうだ。何しんみりしてるのよ、私」</p>
+
+        <p>きつい。怖い。汚い。給料も安い。<br>
+        それでも、手術が無事に終わり、患者さんが生きて病棟へ戻っていく時のあの安堵感。命が繋がった瞬間の、あの震えるような尊さ。それは、この場所でしか味わえないものだ。</p>
+
+        <p>誰かに強制されたわけじゃない。 安定した生活を捨ててまで、あの日、32歳の私が「もう一度」と願って選んだ道だ。若い仲間たちと、汗と涙で掴み取ったプラチナチケットなのだ。</p>
+
+        <div class="highlight-box">
+            <p>「明日も、明後日も……私が選んだ道だもん」</p>
+        </div>
+
+        <p>桂子は、給与明細を丁寧に引き出しにしまい、立ち上がった。<br>
+        足の痛みはまだ消えない。明日になれば、またあの過酷なオペ室が待っている。先輩の厳しい声が飛び交い、緊張に震えるかもしれない。</p>
+
+        <p>それでも、桂子の目に迷いはなかった。<br>
+        明日を信じて、もう一度前を向く。70人の仲間との絆と、自分自身の決断を胸に抱いて。35歳の新人ナースの本当の闘いは、まだ始まったばかりだ。</p>
+
+    </article>
+
+</body>
+</html>
