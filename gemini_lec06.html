@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成AI（Gemini）講座 〜生活を豊かに楽しくする24の魔法〜</title>
+    <!-- Tailwind CSSの読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (見出し用の明朝体と本文用のゴシック体) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                        serif: ['"Noto Serif JP"', 'serif'],
+                    },
+                    colors: {
+                        journal: {
+                            text: '#2c3e50',
+                            light: '#f8fafc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fbfbfb;
+            color: #334155;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* 記事全体のコンテナ設定 */
+        .article-container {
+            max-w-4xl;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        /* プロンプト（演習）用のボックス */
+        .prompt-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid #94a3b8;
+            padding: 1.25rem 1.5rem;
+            margin: 1rem 0 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        /* 箇条書きのスタイル調整 */
+        .custom-list li {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+        .custom-list strong {
+            color: #0f172a;
+        }
+
+        /* 各章（回）ごとのテーマカラー設定 */
+        /* 第1回: ヘルスケア（ブルー系） */
+        .theme-1 .chapter-title { color: #0369a1; border-bottom: 2px solid #bae6fd; }
+        .theme-1 .section-heading { border-left-color: #0ea5e9; }
+        .theme-1 .summary-box { background-color: #f0f9ff; border: 1px solid #e0f2fe; }
+
+        /* 第2回: 学習（グリーン系） */
+        .theme-2 .chapter-title { color: #047857; border-bottom: 2px solid #a7f3d0; }
+        .theme-2 .section-heading { border-left-color: #10b981; }
+        .theme-2 .summary-box { background-color: #ecfdf5; border: 1px solid #d1fae5; }
+
+        /* 第3回: 趣味（バイオレット系） */
+        .theme-3 .chapter-title { color: #6d28d9; border-bottom: 2px solid #ddd6fe; }
+        .theme-3 .section-heading { border-left-color: #8b5cf6; }
+        .theme-3 .summary-box { background-color: #f5f3ff; border: 1px solid #ede9fe; }
+
+        /* 第4回: 創造（アンバー・オレンジ系） */
+        .theme-4 .chapter-title { color: #b45309; border-bottom: 2px solid #fde68a; }
+        .theme-4 .section-heading { border-left-color: #f59e0b; }
+        .theme-4 .summary-box { background-color: #fffbeb; border: 1px solid #fef3c7; }
+
+        /* 第5回: コミュニケーション（ローズ系） */
+        .theme-5 .chapter-title { color: #be123c; border-bottom: 2px solid #fecdd3; }
+        .theme-5 .section-heading { border-left-color: #f43f5e; }
+        .theme-5 .summary-box { background-color: #fff1f2; border: 1px solid #ffe4e6; }
+
+        /* 第6回: 発展（インディゴ系） */
+        .theme-6 .chapter-title { color: #4338ca; border-bottom: 2px solid #c7d2fe; }
+        .theme-6 .section-heading { border-left-color: #6366f1; }
+        .theme-6 .summary-box { background-color: #eef2ff; border: 1px solid #e0e7ff; }
+
+        .chapter-title {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 600;
+            padding-bottom: 0.5rem;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-heading {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 600;
+            padding-left: 0.75rem;
+            border-left-width: 4px;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body class="py-12 px-4 sm:px-6 lg:px-8">
+
+    <main class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden p-8 md:p-12 border border-gray-100">
+        
+        <!-- タイトルセクション -->
+        <div class="text-center mb-16 pb-8 border-b border-gray-100">
+            <h1 class="text-4xl md:text-5xl font-serif font-black text-gray-900 tracking-tight leading-tight mb-4">
+                生成AI（Gemini）講座
+            </h1>
+            <p class="text-xl text-gray-500 font-serif mb-8 tracking-wide">
+                〜生活を豊かに楽しくする24の魔法〜
+            </p>
+            <p class="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto text-left">
+                AI（人工知能）である「Gemini」を、皆様の頼もしい相棒として日常生活で活用する方法を学びます。難しく考える必要はありません。普段、人に話しかけるような言葉で、AIとの会話を楽しんでみましょう。
+            </p>
+        </div>
+
+        <!-- 第1回 -->
+        <article class="theme-1 mb-20">
+            <h2 class="text-3xl chapter-title">【第1回】AIを健康と毎日の食事に活かそう</h2>
+            <p class="text-gray-600 mb-8 font-medium"><strong>本日の目標：</strong> AIを使って、献立の悩みや日々の健康管理をサポートしてもらう感覚を掴む。</p>
+
+            <h3 class="text-xl section-heading">1. 冷蔵庫の余り物で献立作り</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「冷蔵庫にナスと鶏むね肉、卵があります。これらを使って、高齢者でも食べやすい柔らかいおかずのレシピを1つ教えてください。作り方の手順も短く簡単に説明して。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「この料理の完成イメージ画像を生成して」と頼み、レシピカードを作ってみましょう。</li>
+                <li><strong>便利な保存方法:</strong> スマホのメモ帳アプリに「AIレシピ集」フォルダを作り、テキストと画面のスクリーンショット（画面保存）を保存します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">2. 薬の飲み合わせや副作用の簡易確認</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「（薬の名前）という薬を処方されました。一緒に食べてはいけないものや、気をつけるべき体調の変化を、箇条書きでわかりやすく教えて。」（※最終確認は医師へ）
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 冷蔵庫に貼れるよう、大きな文字と短い注意書きのポスター形式で出力させてみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 印刷して「お薬手帳」に挟むか、LINEの「Keep」機能で保存します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">3. 自宅でできる軽い運動プログラム</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「椅子に座ったままできて、膝に負担をかけずに足の筋肉を鍛えられる5分間の体操メニューを考えてください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「1ヶ月間、毎日違うメニューをこなすための30日分の表を作って」と頼み、日めくりカレンダーにしてみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 表を印刷して壁や冷蔵庫に貼り、実践した日に丸をつけて記録します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">4. 栄養バランスのチェック</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「今日のご飯は朝：食パン、昼：そば、夜：焼き魚とご飯と味噌汁でした。シニアとして不足している栄養素と、それを補うおすすめ食材を教えて。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「不足を補うための、明日のスーパーでの買い物メモ（チェックリスト）を作って」とお願いしてみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 買い物リストの画面をスクリーンショットし、スーパーですぐ見られるようにします。</li>
+            </ul>
+
+            <div class="summary-box rounded-lg p-6 mt-8">
+                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                    <span class="text-xl mr-2">💡</span> 第1回のまとめ
+                </h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 ml-1">
+                    <li>AIは毎日の献立作りや運動メニューの考案など、健康管理の心強い味方になります。</li>
+                    <li>薬の情報などは参考に留め、最終的な判断は必ず医師や薬剤師に確認しましょう。</li>
+                    <li>得られた結果をメモやカレンダーに残す工夫で、生活習慣として定着しやすくなります。</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- 第2回 -->
+        <article class="theme-2 mb-20">
+            <h2 class="text-3xl chapter-title">【第2回】AIで日常の疑問を解決し、学びを深めよう</h2>
+            <p class="text-gray-600 mb-8 font-medium"><strong>本日の目標：</strong> 身近なITの疑問や、ニュース、歴史など、知的好奇心を満たす使い方を学ぶ。</p>
+
+            <h3 class="text-xl section-heading">1. スマホや家電の「これどうやるの？」解決</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「スマホのLINEで友達から送られてきた写真を保存して後で見られるようにしたいです。操作手順を優しく教えてください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「ステップごとに図解を入れるための、スライド資料の構成案にして」と頼み、マニュアル化の土台を作ります。</li>
+                <li><strong>便利な保存方法:</strong> 回答を印刷し、機器のそばに「我が家のITマニュアル」として常備します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">2. 歴史や文化の深掘り</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「戦後の東京オリンピック（1964年）の頃、日本の街並みや人々の暮らしはどんな様子でしたか？当時の流行なども含めて教えてください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 得られた回答を「小学生の孫に話して聞かせるための紙芝居の台本にして」と変換してみましょう。</li>
+                <li><strong>便利な保存方法:</strong> パソコンのWordなどに貼り付けて「自分史」やエッセイのネタとして保存します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">3. 最新ニュースの要約</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「今話題の『（ニュースのキーワード）』について、何が起きているのかを小学生にもわかるような言葉で3つのポイントにまとめて。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「『週刊・〇〇（自分の名前）新聞』というタイトルで、新聞記事風のレイアウトで出力して」と頼んでみましょう。</li>
+                <li><strong>便利な保存方法:</strong> スマホのメモ帳に保存し、ご友人との集まりの前の話題作りとして見返します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">4. 若者言葉や流行の解説</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「最近よく聞く『タイパが良い』という言葉はどういう意味ですか？なぜ若い人たちの間で流行っているのか教えてください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 学んだ言葉を使った「LINEスタンプ用の画像」をAIに描かせてみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 手書きの小さなノートに「現代用語辞典」として書き写すのも良い脳トレになります。</li>
+            </ul>
+
+            <div class="summary-box rounded-lg p-6 mt-8">
+                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                    <span class="text-xl mr-2">💡</span> 第2回のまとめ
+                </h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 ml-1">
+                    <li>スマホの操作や気になるニュースなど、わからないことはすぐにAIに聞いて解決しましょう。</li>
+                    <li>難しい言葉は「小学生にもわかるように」など、自分に合ったレベルで解説してもらえます。</li>
+                    <li>昔の出来事などを深掘りして、家族や友人との会話の楽しい「ネタ帳」として活用しましょう。</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- 第3回 -->
+        <article class="theme-3 mb-20">
+            <h2 class="text-3xl chapter-title">【第3回】AIと一緒に趣味と旅行をもっと楽しもう</h2>
+            <p class="text-gray-600 mb-8 font-medium"><strong>本日の目標：</strong> 旅行計画や読書、園芸など、自分の趣味をAIの力でさらに充実させる。</p>
+
+            <h3 class="text-xl section-heading">1. ゆったり楽しむ旅行プランの作成</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「夫婦二人で京都へ1泊2日。あまり歩かずタクシー移動中心で、景色と食事が楽しめるシニア向け観光プランを作って。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> プランに合わせて「シニア夫婦が持っていくべき持ち物チェックリスト」も作成してもらいましょう。</li>
+                <li><strong>便利な保存方法:</strong> 作成したプランやリストは、そのままLINEで同行者に送信（共有）して残します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">2. ガーデニングのアドバイス</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「庭のアジサイの剪定は、いつ、どのあたりを切れば良いですか？初心者にもわかるようにコツを教えて。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「アジサイの1年間の水やり、肥料、剪定のタイミングを月別の表にして」と頼み、年間カレンダーを作ります。</li>
+                <li><strong>便利な保存方法:</strong> カレンダーを印刷し、園芸用品の箱や物置の壁に貼り付けておきます。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">3. 読書や映画のレコメンド</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「司馬遼太郎の歴史小説が好きです。最近の本や映画の中で、私の好みに合いそうなおすすめを3つ教えてください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> おすすめされた作品を「図書館で予約しやすいようにタイトルと作者名だけのリストにして」と頼みましょう。</li>
+                <li><strong>便利な保存方法:</strong> スマホのメモ帳に「読みたい本・映画リスト」を作り、随時追加していきます。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">4. 俳句や短歌の添削・相談</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「俳句を作りました。『（自分の句）』。良いところと、もっと季節感を出すための言葉のアドバイスをください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 句の情景に合わせた水墨画風の画像をAIに生成させ、テキストと組み合わせてみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 画像編集アプリを使って「写真＋俳句」の画像作品にし、スマホの壁紙に設定します。</li>
+            </ul>
+
+            <div class="summary-box rounded-lg p-6 mt-8">
+                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                    <span class="text-xl mr-2">💡</span> 第3回のまとめ
+                </h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 ml-1">
+                    <li>旅行の計画からガーデニングのコツまで、自分の趣味をより深く楽しむためにAIを活用できます。</li>
+                    <li>自分の好みをAIに伝えておすすめの作品を教えてもらい、新しい趣味の世界を広げましょう。</li>
+                    <li>画像生成機能などを組み合わせることで、俳句などの趣味がさらに素敵な「作品」に仕上がります。</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- 第4回 -->
+        <article class="theme-4 mb-20">
+            <h2 class="text-3xl chapter-title">【第4回】AIで創造力を発揮しよう！作品作りに挑戦</h2>
+            <p class="text-gray-600 mb-8 font-medium"><strong>本日の目標：</strong> AIの文章作成能力や画像生成能力を使って、世界に一つだけの「作品」を作る。</p>
+
+            <h3 class="text-xl section-heading">1. 孫が喜ぶ「読み聞かせ」の物語作り</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「5歳の孫の『〇〇くん』が主人公で、しゃべるウサギと魔法の木の実を探す、3分で読み聞かせができるお話を作って。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 各シーンの挿絵をAIに描かせ、タブレットで読める「デジタル絵本」に挑戦しましょう。</li>
+                <li><strong>便利な保存方法:</strong> 文章は印刷し、挿絵と組み合わせたものはPDF形式などで保存します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">2. 自分史の作成サポート</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「子供時代の思い出を文章にしたいです。昭和30年代の田舎の暮らしについて質問してください。答える形で自分史を書きます。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> まとまった文章に「目次と章タイトル」を付けて、本のような構成に整えてもらいましょう。</li>
+                <li><strong>便利な保存方法:</strong> パソコンのWordなどで保存し、USBメモリにもバックアップを取った上で印刷・製本します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">3. 脳トレ・クイズの出題と作成</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「脳トレのために、少し難しい漢字の読み方クイズを5問出してください。1問ずつ出して解説も教えて。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「このクイズを20問まとめて、印刷して書き込めるドリル形式（回答は別ページ）で出力して」と頼んでみましょう。</li>
+                <li><strong>便利な保存方法:</strong> ドリル形式のテキストを印刷し、机の上に置いて毎日の日課にします。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">4. AIで画像生成（ポストカード作り）</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「日本の春を感じる水彩画のような絵を描いて。内容は『満開の桜、静かな川、遠くに富士山』で。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> スマホの「待ち受け画面のサイズ」に合わせて画像を再生成させてみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 画像をスマホやパソコンの「写真・ピクチャ」フォルダに保存し、オンライン印刷サービスでグッズ化するのもおすすめです。</li>
+            </ul>
+
+            <div class="summary-box rounded-lg p-6 mt-8">
+                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                    <span class="text-xl mr-2">💡</span> 第4回のまとめ
+                </h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 ml-1">
+                    <li>孫への絵本や自分史の作成など、AIを優秀なアシスタントにして世界に一つだけの作品を作れます。</li>
+                    <li>画像生成機能を使えば、頭の中のイメージを言葉で伝えるだけで本格的な絵やポストカードを作成できます。</li>
+                    <li>作成したクイズドリルなどは、自分だけでなく家族と一緒に楽しむコミュニケーションツールにもなります。</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- 第5回 -->
+        <article class="theme-5 mb-20">
+            <h2 class="text-3xl chapter-title">【第5回】AIで広がるコミュニケーションと社会との繋がり</h2>
+            <p class="text-gray-600 mb-8 font-medium"><strong>本日の目標：</strong> 人間関係を円滑にし、社会と繋がるためのツールとしてAIを活用する。</p>
+
+            <h3 class="text-xl section-heading">1. 丁寧な手紙やメールの代筆</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「お世話になった先生に、近況報告と季節の挨拶状を送りたいです。丁寧で温かみのある春の手紙の例文を書いて。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 春の挨拶状の背景に使える「淡い桜色の便箋の画像」をAIに作らせ、デジタルグリーティングカードにしてみましょう。</li>
+                <li><strong>便利な保存方法:</strong> よく使う挨拶文は、スマホの「ユーザー辞書」に登録しておくか、メールの下書きに保存します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">2. 地域のボランティアやサークル活動のアイデア</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「編み物が得意です。この特技を活かして地域の人と交流できるボランティアやサークル活動にはどんなものがありますか？」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「公民館に貼るための、編み物サークルメンバー募集ポスターのレイアウト案を出して」と依頼してみましょう。</li>
+                <li><strong>便利な保存方法:</strong> AIの提案をWordなどに貼り付け、実際の活動準備やチラシ作りの土台として活用します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">3. プレゼント選びの相談</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「中学生の孫娘に、人気で実用的な予算1万円以内の入学祝いをいくつか提案して。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 提案された候補を「メリット・価格・おすすめ理由」の表形式にまとめ、家族会議の資料にしてみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 比較表をスクリーンショットして家族のLINEグループに共有します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">4. 話し相手・相談相手として</h3>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「今日、綺麗な青い鳥を見かけて幸せな気分になりました。何かこの出来事に関連する楽しい話題を振ってくれませんか？」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> これまでのAIとの会話から「私が元気になるようなポジティブな言葉を31個選んで、日めくりカレンダーにして」と頼んでみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 手書きの日記帳に、面白かったAIの回答や気づきを一行だけ書き留めて残しておきます。</li>
+            </ul>
+
+            <div class="summary-box rounded-lg p-6 mt-8">
+                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                    <span class="text-xl mr-2">💡</span> 第5回のまとめ
+                </h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 ml-1">
+                    <li>手紙の代筆やプレゼント選びなど、周囲の人との関わりをより豊かで丁寧なものにするためにAIを利用できます。</li>
+                    <li>自分の特技を活かしたボランティア活動のアイデアをもらい、地域社会との繋がりを広げるきっかけにしましょう。</li>
+                    <li>日常のちょっとした出来事や感情を話す相手として、AIとの気軽な会話を楽しんでみてください。</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- 第6回 -->
+        <article class="theme-6 mb-12">
+            <h2 class="text-3xl chapter-title">【第6回】AIを自分だけの専属アシスタントに育てる（発展・総集編）</h2>
+            <p class="text-gray-600 mb-8 font-medium"><strong>本日の目標：</strong> 学んだテクニックを組み合わせ、AIを「自分だけの専属の相棒」としてさらに高度に使いこなす。</p>
+
+            <h3 class="text-xl section-heading">1. 複数の条件を組み合わせた「複合プロンプト」</h3>
+            <p class="text-gray-700 mb-4 pl-2">これまでの要素を組み合わせ、一回の質問で多くの情報を引き出します。</p>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「来月、青森へ旅行に行きます。『おすすめの観光ルート』『名物であるりんごの歴史』『疲れたときにホテルでできる簡単なストレッチ』の3つを同時に教えてください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「この内容を、旅行に持っていくための1枚のA4サイズのチラシ風にレイアウトして文章を整えて」と頼んでみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 回答をWordに貼り付けて、オリジナルの旅行ガイドブックとして印刷します。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">2. AIに役割を与えて相談する（ロールプレイ）</h3>
+            <p class="text-gray-700 mb-4 pl-2">AIに「専門家」になりきってもらうことで、より質の高いアドバイスをもらいます。</p>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「あなたは『シニア向けのプロの健康アドバイザー』です。その立場から、毎日白米をたくさん食べてしまう私に、無理なく糖質を減らすアドバイスを優しくしてください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「今度は『辛口の料理評論家』になりきって、私の作った肉じゃが（少し味が薄かった）の改善点をユーモアたっぷりに指摘して」と楽しんでみましょう。</li>
+                <li><strong>便利な保存方法:</strong> 面白かった会話のやり取りをスクリーンショットで残し、ご家族にシェアして笑いの種にします。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">3. 前の会話の続きをする（コンテキストの活用）</h3>
+            <p class="text-gray-700 mb-4 pl-2">AIは以前の会話の流れを覚えています。何度も会話のキャッチボールをしてみましょう。</p>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        （第1回で作った献立の会話の続きで）「昨日教えてもらった鶏肉とナスの料理、とても美味しかったです！今日は豚肉があるのですが、昨日の料理と味が被らない和風のおかずを教えて。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「この1週間の献立のやり取りを踏まえて、私の好みの味付けの傾向を分析してみて」と頼み、AIに自分を理解させましょう。</li>
+                <li><strong>便利な保存方法:</strong> 同じチャット（会話の部屋）を消さずに使い続けることで、AIがあなたの好みをどんどん学習していく自分専用のデータベースになります。</li>
+            </ul>
+
+            <h3 class="text-xl section-heading">4. 【総集編】私だけのAI活用プラン作成</h3>
+            <p class="text-gray-700 mb-4 pl-2">これまでの集大成として、自分専用のAI活用計画をAI自身に作ってもらいます。</p>
+            <ul class="custom-list pl-2 mb-6">
+                <li><strong>基本演習:</strong>
+                    <div class="prompt-box">
+                        「私は70代で、趣味は写真と散歩、パソコンは少し使えます。全6回のAI講座を修了した私が、今後1年間でAIを使って毎日を楽しくするための『私だけのAI活用プラン・10カ条』を作ってください。」
+                    </div>
+                </li>
+                <li><strong>発展課題:</strong> 「その10カ条を達成するために、私が今週まずやるべき『小さな第一歩』を3つ提案して」と背中を押してもらいましょう。</li>
+                <li><strong>便利な保存方法:</strong> 完成した「10カ条」を色紙などに筆ペンで書き写し、パソコンの横や目につく場所に飾って、AIとの新しい生活の宣言とします。</li>
+            </ul>
+
+            <div class="summary-box rounded-lg p-6 mt-8">
+                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                    <span class="text-xl mr-2">💡</span> 第6回のまとめ
+                </h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 ml-1">
+                    <li>複数の条件を組み合わせたり、AIに専門家の役割を与えたりすることで、より高度で具体的な回答を引き出せます。</li>
+                    <li>会話を継続することで、AIはあなたの好みや状況を学習し、ますます自分に合った「パーソナルな相棒」へと育ちます。</li>
+                    <li>最後に作成した「私だけのAI活用プラン」を道しるべに、これからも自由な発想でAIとの生活を楽しんでいきましょう。</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- 結び -->
+        <div class="text-center pt-12 border-t border-gray-200 mt-8">
+            <h3 class="text-2xl font-serif font-bold text-indigo-900 mb-4">🎉 修了おめでとうございます！</h3>
+            <p class="text-gray-700 leading-relaxed max-w-2xl mx-auto">
+                全6回の講座を通じて、皆様はAIを使いこなす「魔法の言葉（プロンプト）」をしっかりと身につけました。AIは使えば使うほど、あなたの良き相棒に育っていきます。これからも自由な発想で、AIとの対話を楽しんでください！
+            </p>
+        </div>
+
+    </main>
+
+</body>
+</html>
