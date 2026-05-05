@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC基本操作 理解度クイズ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+        }
+        .quiz-option {
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        /* 選択肢ホバー時のスタイル */
+        .quiz-option:hover {
+            border-color: #fca5a5; /* red-300 */
+            transform: translateY(-2px);
+        }
+        /* 選択中の選択肢のスタイル */
+        input[type="radio"]:checked + label {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+            color: #991b1b; /* red-800 */
+            font-weight: 600;
+        }
+        /* 正解のスタイル */
+        .correct {
+             background-color: #dcfce7 !important; /* green-100 */
+             border-color: #22c55e !important; /* green-500 */
+             color: #15803d !important; /* green-700 */
+        }
+        /* 不正解のスタイル */
+        .incorrect {
+             background-color: #fee2e2 !important; /* red-100 */
+             border-color: #ef4444 !important; /* red-500 */
+             color: #b91c1c !important; /* red-700 */
+        }
+        /* 解説欄のスタイル */
+        .explanation {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0;
+        }
+        .explanation.show {
+             max-height: 200px; /* 十分な高さを確保 */
+             padding: 0.75rem; /* p-3 */
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
+    <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 lg:p-10 w-full max-w-3xl mx-auto">
+        <header class="text-center mb-8 border-b border-slate-200 pb-6">
+            <h1 class="text-3xl sm:text-4xl font-bold text-red-900">PC基本操作 理解度クイズ</h1>
+            <p class="text-red-700 mt-2 text-lg">10個の基本操作をクイズで確認してみましょう！</p>
+        </header>
+
+        <div id="quizContainer" class="space-y-6">
+            <!-- クイズ項目はここに挿入されます -->
+        </div>
+
+        <div class="mt-10 text-center">
+            <button id="submitBtn" class="bg-red-800 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700 transition-transform transform hover:scale-105">
+                答え合わせ
+            </button>
+        </div>
+
+        <div id="result" class="hidden mt-8 text-center p-6 rounded-lg border-2">
+            <h2 id="score" class="text-5xl font-bold mb-2"></h2>
+            <p id="feedback" class="text-xl font-medium"></p>
+            <button id="retryBtn" class="mt-6 bg-slate-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-slate-700 transition">
+                もう一度挑戦
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                question: "パソコンの作業を安全に終了するための正しい操作はどれですか？",
+                options: ["電源ボタンを長押しする", "メニューから「シャットダウン」", "コンセントを抜く", "モニターの電源だけ消す"],
+                answer: "メニューから「シャットダウン」",
+                explanation: "解説：シャットダウンは、使用中のアプリを正しく終了させてから電源を切るため、データが壊れる心配がなく最も安全な方法です。"
+            },
+            {
+                id: 2,
+                question: "アプリのアイコンを開く（起動する）ときの基本操作はどれですか？",
+                options: ["右クリック", "クリック", "ドラッグ＆ドロップ", "ダブルクリック"],
+                answer: "ダブルクリック",
+                explanation: "解説：ダブルクリックは「これを開く・実行する」という指示になります。1回のクリックは「これを選ぶ」という選択の操作で、意味が異なります。"
+            },
+            {
+                id: 3,
+                question: "パソコン起動後に最初に表示される、アイコンが並んだ画面を何と呼びますか？",
+                options: ["デスクトップ", "ウィンドウ", "フォルダ", "ブラウザ"],
+                answer: "デスクトップ",
+                explanation: "解説：デスクトップは、実際の机の上のように、よく使うアプリやファイルを置いておくための基本となる作業スペースです。"
+            },
+            {
+                id: 4,
+                question: "作成した文章や写真などのデータを整理するために使う「保管箱」の役割のものは何ですか？",
+                options: ["ファイル", "アイコン", "フォルダ", "アプリ"],
+                answer: "フォルダ",
+                explanation: "解説：フォルダは、関連するファイルをまとめて保管・整理するためのものです。フォルダの中にさらにフォルダを作ることもでき、階層的に管理できます。"
+            },
+            {
+                id: 5,
+                question: "開いているウィンドウを画面いっぱいに表示するボタンはどれですか？",
+                options: [" [－] (最小化)", "[□] (最大化)", "[×] (閉じる)", "[？] (ヘルプ)"],
+                answer: "[□] (最大化)",
+                explanation: "解説：[□]ボタンでウィンドウを最大化すると、作業スペースを有効に活用できます。もう一度押すと元のサイズに戻ります。"
+            },
+            {
+                id: 6,
+                question: "ローマ字入力した「ひらがな」を「漢字」に変換・確定するときの主なキー操作はどれですか？",
+                options: ["Shiftキー → Enterキー", "Tabキー → Enterキー", "スペースキー → Enterキー", "Ctrlキー → スペースキー"],
+                answer: "スペースキー → Enterキー",
+                explanation: "解説：スペースキーで変換候補を表示・選択し、Enterキーでその文字を確定するのが、文字入力の基本的な流れです。"
+            },
+            {
+                id: 7,
+                question: "インターネットの世界を見るために使うアプリ（Google Chromeなど）を何と呼びますか？",
+                options: ["SNS", "ブラウザ", "OS (オペレーティングシステム)", "フォルダ"],
+                answer: "ブラウザ",
+                explanation: "解説：ブラウザは「閲覧ソフト」とも呼ばれます。インターネット上にあるWebページという情報を表示するための専用アプリです。"
+            },
+            {
+                id: 8,
+                question: "使い終わったアプリを終了する一番確実な方法はどれですか？",
+                options: ["ウィンドウを最小化する", "アプリのアイコンをゴミ箱に入れる", "パソコンを再起動する", "ウィンドウ右上の[×]ボタンを押す"],
+                answer: "ウィンドウ右上の[×]ボタンを押す",
+                explanation: "解説：[×]ボタンはアプリを終了させる正式な操作です。最小化（[－]ボタン）は、一時的に隠すだけで、アプリは起動したままです。"
+            },
+            {
+                id: 9,
+                question: "文章や画像を複製して、別の場所に貼り付ける操作を一般的に何と呼びますか？",
+                options: ["コピー＆ペースト", "カット＆ペースト", "ドラッグ＆ドロップ", "プリント＆スキャン"],
+                answer: "コピー＆ペースト",
+                explanation: "解説：「コピー」で元のデータを残したまま複製し、「ペースト」で貼り付けます。「カット」は元のデータを移動させる場合に使い分けます。"
+            },
+            {
+                id: 10,
+                question: "作成したファイルを初めてPCに保存するときに行う操作はどれですか？",
+                options: ["上書き保存", "名前を付けて保存", "自動保存", "印刷"],
+                answer: "名前を付けて保存",
+                explanation: "解説：初めて保存するときは、PCに「この名前で、この場所に」と指定する必要があります。それが「名前を付けて保存」です。2回目以降は「上書き保存」で変更を記録します。"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quizContainer');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultDiv = document.getElementById('result');
+        const scoreEl = document.getElementById('score');
+        const feedbackEl = document.getElementById('feedback');
+        const retryBtn = document.getElementById('retryBtn');
+
+        function renderQuiz() {
+            quizContainer.innerHTML = '';
+            quizData.forEach((item, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.id = `question-block-${item.id}`;
+                // 質問ごとに背景色を交互に変更
+                const bgColor = index % 2 === 0 ? 'bg-slate-50' : 'bg-red-50';
+                questionBlock.className = `${bgColor} p-5 rounded-lg border border-slate-200`;
+
+                const questionText = document.createElement('p');
+                questionText.className = "text-xl font-semibold text-slate-800 mb-4";
+                questionText.innerHTML = `<span class="text-red-700 font-bold">Q${index + 1}.</span> ${item.question}`;
+                questionBlock.appendChild(questionText);
+                
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = "grid grid-cols-1 sm:grid-cols-2 gap-3";
+                
+                item.options.forEach((option, optionIndex) => {
+                    const optionContainer = document.createElement('div');
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.id = `q${item.id}_option${optionIndex}`; 
+                    radio.name = `q${item.id}`;
+                    radio.value = option;
+                    radio.className = "sr-only";
+
+                    const label = document.createElement('label');
+                    label.htmlFor = radio.id;
+                    label.textContent = option;
+                    label.className = "quiz-option block w-full text-left p-4 rounded-lg border-2 border-slate-300 bg-white cursor-pointer font-medium text-slate-700 text-lg";
+
+                    optionContainer.appendChild(radio);
+                    optionContainer.appendChild(label);
+                    optionsGrid.appendChild(optionContainer);
+                });
+
+                questionBlock.appendChild(optionsGrid);
+                
+                const explanationDiv = document.createElement('div');
+                explanationDiv.id = `explanation-${item.id}`;
+                explanationDiv.className = 'explanation mt-4 bg-slate-100 rounded-md text-slate-700 text-sm';
+                explanationDiv.textContent = item.explanation;
+                questionBlock.appendChild(explanationDiv);
+                
+                quizContainer.appendChild(questionBlock);
+            });
+        }
+
+        submitBtn.addEventListener('click', () => {
+            let correctAnswers = 0;
+            quizData.forEach(item => {
+                const selectedOption = quizContainer.querySelector(`input[name="q${item.id}"]:checked`);
+                const questionBlock = document.getElementById(`question-block-${item.id}`);
+                const labels = questionBlock.querySelectorAll('label');
+                
+                labels.forEach(label => {
+                    const radio = document.getElementById(label.htmlFor);
+                    label.classList.remove('correct', 'incorrect');
+                    if (radio.value === item.answer) {
+                        label.classList.add('correct');
+                    }
+                });
+
+                if (selectedOption) {
+                    const selectedLabel = quizContainer.querySelector(`label[for="${selectedOption.id}"]`);
+                    if (selectedOption.value !== item.answer) {
+                        selectedLabel.classList.add('incorrect');
+                    } else {
+                        correctAnswers++;
+                    }
+                }
+                
+                questionBlock.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+
+                // 解説を表示
+                const explanationDiv = document.getElementById(`explanation-${item.id}`);
+                setTimeout(() => {
+                    explanationDiv.classList.add('show');
+                }, 100);
+            });
+            
+            const score = Math.round((correctAnswers / quizData.length) * 100);
+            
+            resultDiv.className = 'hidden mt-8 text-center p-6 rounded-lg border-2';
+            scoreEl.className = 'text-5xl font-bold mb-2';
+            feedbackEl.className = 'text-xl font-medium';
+
+            scoreEl.textContent = `${score}点 / 100点`;
+            
+            let feedback = '';
+            if (score === 100) {
+                feedback = '🎉 完璧です！PC基本操作マスターですね！';
+                resultDiv.classList.add('bg-green-50', 'border-green-300');
+                scoreEl.classList.add('text-green-600');
+                feedbackEl.classList.add('text-green-800');
+            } else if (score >= 70) {
+                feedback = '👍 素晴らしい！間違えた問題を復習しましょう！';
+                resultDiv.classList.add('bg-blue-50', 'border-blue-300');
+                scoreEl.classList.add('text-blue-600');
+                feedbackEl.classList.add('text-blue-800');
+            } else if (score >= 40) {
+                feedback = '🙂 まずまずです。わからない項目をもう一度確認してみましょう。';
+                resultDiv.classList.add('bg-yellow-50', 'border-yellow-300');
+                scoreEl.classList.add('text-yellow-600');
+                feedbackEl.classList.add('text-yellow-800');
+            } else {
+                feedback = '💪 これからですね！焦らず一つずつ覚えていきましょう。';
+                resultDiv.classList.add('bg-red-50', 'border-red-300');
+                scoreEl.classList.add('text-red-600');
+                feedbackEl.classList.add('text-red-800');
+            }
+            feedbackEl.textContent = feedback;
+            
+            resultDiv.classList.remove('hidden');
+            submitBtn.classList.add('hidden');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        });
+
+        retryBtn.addEventListener('click', () => {
+            resultDiv.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        renderQuiz();
+    </script>
+</body>
+</html>
+
