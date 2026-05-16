@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geminiちらし作成講座 - 受講生ポータル</title>
+    <!-- Tailwind CSSの読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fontsの読み込み (Noto Sans JP) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesomeの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        secondary: '#475569',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+            /* 背景にわずかなグラデーションを追加 */
+            background-image: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        /* カードのホバーエフェクト */
+        .resource-card {
+            transition: all 0.3s ease;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        /* スムーススクロール */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-primary-500 selection:text-white">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4 md:py-6">
+                <div class="flex items-center gap-3">
+                    <div class="bg-primary-500 text-white p-2 rounded-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+                    </div>
+                    <h1 class="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">Geminiちらし作成講座</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <span class="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full"><i class="fa-solid fa-user-graduate mr-2"></i>受講生専用ポータル</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-12 border border-slate-100">
+            <div class="px-6 py-8 md:p-12 relative">
+                <!-- 装飾用の背景 -->
+                <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-primary-100 rounded-full opacity-50 blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-blue-100 rounded-full opacity-50 blur-3xl"></div>
+                
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">ようこそ、Geminiちらし作成講座へ</h2>
+                    <p class="text-lg text-slate-600 mb-6 max-w-2xl leading-relaxed">
+                        このページは受講生の皆様のための専用ポータルサイトです。講座で使用する動画、スライド、資料などをまとめています。ご自身のペースで学習を進めるためにご活用ください。
+                    </p>
+                    <div class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-colors shadow-sm cursor-pointer" onclick="document.getElementById('resources').scrollIntoView({behavior: 'smooth'})">
+                        教材一覧を見る <i class="fa-solid fa-arrow-down ml-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-4 mb-8">
+            <div class="flex items-center text-sm font-medium text-slate-500">
+                <span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span> 動画教材
+            </div>
+            <div class="flex items-center text-sm font-medium text-slate-500">
+                <span class="w-3 h-3 rounded-full bg-orange-500 mr-2"></span> スライド/PDF
+            </div>
+            <div class="flex items-center text-sm font-medium text-slate-500">
+                <span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span> ドキュメント
+            </div>
+        </div>
+
+        <div id="resources" class="space-y-12">
+            
+            <!-- STEP 1: 基礎知識 -->
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-slate-800 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                    <h3 class="text-2xl font-bold text-slate-900 border-b-2 border-primary-500 pb-1 inline-block">AIとPCの基礎知識</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Resource: PCの仕組みとAI -->
+                    <a href="https://drive.google.com/file/d/16yq-Ad0aaqkeUpwEetROk3MYGqvVRglR/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="resource-card block bg-white rounded-xl border border-slate-200 overflow-hidden group">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center w-fit">
+                                    <i class="fa-solid fa-video mr-1.5"></i> 動画
+                                </div>
+                                <i class="fa-solid fa-external-link-alt text-slate-300 group-hover:text-primary-500 transition-colors"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-primary-600 transition-colors">PCの仕組みとAI</h4>
+                            <p class="text-slate-500 text-sm">AIを使いこなすために知っておきたい、パソコンの基本的な仕組みとAIとの関係性について解説します。</p>
+                        </div>
+                        <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex justify-end">
+                            <span class="text-primary-600 text-sm font-medium group-hover:underline">視聴する</span>
+                        </div>
+                    </a>
+
+                    <!-- Resource: 生成AIの正体 -->
+                    <a href="https://drive.google.com/file/d/1NpS256YqGyjjjeCvWx5wPJrZsxv8ma2S/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="resource-card block bg-white rounded-xl border border-slate-200 overflow-hidden group">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center w-fit">
+                                    <i class="fa-solid fa-video mr-1.5"></i> 動画
+                                </div>
+                                <i class="fa-solid fa-external-link-alt text-slate-300 group-hover:text-primary-500 transition-colors"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-primary-600 transition-colors">生成AIの正体</h4>
+                            <p class="text-slate-500 text-sm">Geminiのような「生成AI」とは一体何なのか、どのような仕組みで動いているのかを分かりやすく紐解きます。</p>
+                        </div>
+                        <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex justify-end">
+                            <span class="text-primary-600 text-sm font-medium group-hover:underline">視聴する</span>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-slate-800 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
+                    <h3 class="text-2xl font-bold text-slate-900 border-b-2 border-primary-500 pb-1 inline-block">チラシ作成講座 本編</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Resource: 解説（動画） -->
+                    <a href="https://drive.google.com/file/d/1HiO7BaEcnmzDohUB7FeHeM85p3qUnixq/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="resource-card block bg-white rounded-xl border border-slate-200 overflow-hidden group">
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center w-fit">
+                                    <i class="fa-solid fa-play-circle mr-1.5"></i> 講義動画
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center h-32 bg-slate-100 rounded-lg mb-4 text-slate-400 group-hover:text-primary-400 transition-colors">
+                                <i class="fa-solid fa-file-video text-5xl"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-primary-600 transition-colors leading-tight">Geminiチラシ講座解説<br>(動画)</h4>
+                        </div>
+                    </a>
+
+                    <!-- Resource: 解説（スライド） -->
+                    <a href="https://docs.google.com/presentation/d/1lkUqA9RoLMP7s2v1vw4rOs59ia6Hh4Qe/edit?usp=drive_link&ouid=113332992203721637263&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer" class="resource-card block bg-white rounded-xl border border-slate-200 overflow-hidden group">
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center w-fit">
+                                    <i class="fa-solid fa-person-chalkboard mr-1.5"></i> スライド
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center h-32 bg-slate-100 rounded-lg mb-4 text-slate-400 group-hover:text-orange-400 transition-colors">
+                                <i class="fa-solid fa-file-powerpoint text-5xl"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-primary-600 transition-colors leading-tight">Geminiチラシ講座解説<br>(スライド)</h4>
+                        </div>
+                    </a>
+
+                    <!-- Resource: 資料（PDF） -->
+                    <a href="https://drive.google.com/file/d/17F_qCgs7kcLQcYAZgWQIhk55Tz2duHv4/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="resource-card block bg-white rounded-xl border border-slate-200 overflow-hidden group">
+                        <div class="p-5">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-xs font-semibold flex items-center w-fit">
+                                    <i class="fa-solid fa-file-pdf mr-1.5"></i> PDF
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center h-32 bg-slate-100 rounded-lg mb-4 text-slate-400 group-hover:text-red-400 transition-colors">
+                                <i class="fa-solid fa-file-pdf text-5xl"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-slate-800 mb-2 group-hover:text-primary-600 transition-colors leading-tight">Geminiチラシ講座資料<br>(PDF)</h4>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-slate-800 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
+                    <h3 class="text-2xl font-bold text-slate-900 border-b-2 border-primary-500 pb-1 inline-block">応用・実践</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+                    <!-- Resource: Gemini活用24の魔法 -->
+                    <a href="https://docs.google.com/document/d/1Rn7Zv_e5n4i2G_cVhb2cg5hVfgaVbVRd_Pe7QeGQghE/edit?usp=drive_link" target="_blank" rel="noopener noreferrer" class="resource-card block bg-gradient-to-r from-primary-600 to-indigo-600 rounded-xl shadow-lg overflow-hidden group">
+                        <div class="p-8 md:flex items-center justify-between">
+                            <div class="mb-4 md:mb-0 md:mr-6 text-white">
+                                <div class="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center w-fit mb-3 backdrop-blur-sm">
+                                    <i class="fa-solid fa-file-lines mr-1.5"></i> Google Docs
+                                </div>
+                                <h4 class="text-2xl font-bold mb-2 flex items-center">
+                                    Gemini活用24の魔法 <i class="fa-solid fa-sparkles ml-2 text-yellow-300"></i>
+                                </h4>
+                                <p class="text-primary-100 text-sm max-w-lg">チラシ作成以外にも使える、Geminiのポテンシャルを最大限に引き出す24の実践的なプロンプト（指示文）や活用テクニック集です。</p>
+                            </div>
+                            <div class="flex-shrink-0 flex items-center justify-center w-16 h-16 bg-white rounded-full text-primary-600 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                                <i class="fa-solid fa-arrow-right text-xl"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-16 py-8">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="flex justify-center items-center gap-2 mb-4 text-primary-500">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <p class="text-slate-500 text-sm">
+                &copy; <script>document.write(new Date().getFullYear())</script> Geminiチラシ作成講座. All rights reserved.
+            </p>
+            <p class="text-slate-400 text-xs mt-2">
+                ※ 各リンクをクリックするとGoogle DriveまたはGoogle Docsが開きます。アクセス権限が必要です。
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
