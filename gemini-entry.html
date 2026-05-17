@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>さわって学ぶ！生成AI入門ガイド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Soft Teal Accent -->
+    <!-- Application Structure Plan: A single-page, vertically scrolling application with a sticky navigation bar. The content is divided into thematic sections (Introduction, Basics, AI Types, Prompting Tips, Use Cases, Precautions). This structure breaks down the information into digestible, non-linear chunks, allowing users to explore at their own pace. Interactive elements like tabs for AI types, an accordion for prompting tips, and clickable cards for use cases are used to make learning engaging and reduce cognitive load, which is ideal for a senior audience new to the topic. -->
+    <!-- Visualization & Content Choices: 
+        - AI Basics (GenAI vs Assistant): Goal: Compare -> Side-by-side cards (HTML/CSS). Interaction: Simple layout. Justification: Clear, immediate visual distinction.
+        - AI Types (ChatGPT, etc.): Goal: Inform/Compare -> Tabbed interface. Interaction: Click tabs to switch content. Justification: Hides complexity, allows focused learning on one AI at a time.
+        - Prompting Tips: Goal: Organize/Inform -> Accordion list. Interaction: Click to expand/collapse. Justification: Prevents overwhelming the user with a long list; encourages focused reading of one tip at a time.
+        - Use Cases: Goal: Inform/Organize -> Grid of clickable cards. Interaction: Click to reveal details in a modal. Justification: Visually scannable and engaging, encourages exploration of practical applications.
+        - Precautions: Goal: Inform -> Styled list with icons. Interaction: Static. Justification: Icons enhance visual recall for important warnings.
+        - Library/Method: All interactions are built with vanilla JavaScript and styled with Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .active-nav {
+            color: #2C7A7B;
+            font-weight: 700;
+            border-bottom: 2px solid #2C7A7B;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover {
+            color: #2C7A7B;
+            border-bottom: 2px solid #2C7A7B;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .card-shadow:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="smooth-scroll">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="text-xl font-bold text-gray-800">さわって学ぶ！生成AI</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#section-1" class="nav-link pb-1">はじめに</a>
+                <a href="#section-2" class="nav-link pb-1">AIってなに？</a>
+                <a href="#section-3" class="nav-link pb-1">AIの仲間たち</a>
+                <a href="#section-4" class="nav-link pb-1">話すコツ</a>
+                <a href="#section-5" class="nav-link pb-1">できること</a>
+                <a href="#section-6" class="nav-link pb-1">注意点</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4">
+            <a href="#section-1" class="block py-2 text-gray-700 hover:text-teal-600">はじめに</a>
+            <a href="#section-2" class="block py-2 text-gray-700 hover:text-teal-600">AIってなに？</a>
+            <a href="#section-3" class="block py-2 text-gray-700 hover:text-teal-600">AIの仲間たち</a>
+            <a href="#section-4" class="block py-2 text-gray-700 hover:text-teal-600">話すコツ</a>
+            <a href="#section-5" class="block py-2 text-gray-700 hover:text-teal-600">できること</a>
+            <a href="#section-6" class="block py-2 text-gray-700 hover:text-teal-600">注意点</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="section-1" class="text-center py-20 mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">生成AI入門ガイドへようこそ</h1>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600 leading-relaxed">
+                このガイドは、シニアの皆さんが日常生活で生成AIを楽しく、賢く活用するためのお手伝いをします。インターネットが生活を変えたように、AIも日々の暮らしを豊かにする大きな可能性を秘めています。難しい知識は不要です。「使いながら学ぶ」という気軽な気持ちで、一緒にAIの世界を探検してみましょう。
+            </p>
+        </section>
+
+        <section id="section-2" class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800">AIってなに？</h2>
+            <p class="text-center text-gray-600 mb-12">AIには少し違うタイプのものがいますが、難しく考える必要はありません。「賢い相談相手」と捉えて、気軽に話しかけてみましょう。</p>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-8 rounded-xl card-shadow border border-gray-100">
+                    <h3 class="text-2xl font-bold text-teal-700 mb-4">🎨 生成AI (芸術家タイプ)</h3>
+                    <p class="text-gray-600 leading-relaxed">膨大な知識から、新しい文章、美しい画像、斬新なアイデアなどを<strong class="text-teal-600">ゼロから創造する</strong>のが得意です。まるで知識豊富な芸術家のようです。</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl card-shadow border border-gray-100">
+                    <h3 class="text-2xl font-bold text-orange-700 mb-4">💼 AIアシスタント (秘書タイプ)</h3>
+                    <p class="text-gray-600 leading-relaxed">予定の管理、情報検索、アプリの操作など、日常の具体的なタスクを<strong class="text-orange-600">正確に手伝う</strong>のが得意です。まるで優秀な秘書のようです。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-3" class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800">AIの仲間たち</h2>
+            <p class="text-center text-gray-600 mb-12">代表的な3つのAIをご紹介します。それぞれ得意なことがあるので、目的に合わせて使い分けてみましょう。</p>
+            <div class="max-w-4xl mx-auto bg-white rounded-xl card-shadow p-2">
+                <div class="flex border-b border-gray-200">
+                    <button data-tab="chatgpt" class="ai-tab flex-1 py-4 px-2 text-center font-semibold text-gray-700 hover:bg-teal-50 rounded-t-lg transition-colors duration-300">ChatGPT</button>
+                    <button data-tab="copilot" class="ai-tab flex-1 py-4 px-2 text-center font-semibold text-gray-500 hover:bg-teal-50 rounded-t-lg transition-colors duration-300">Copilot</button>
+                    <button data-tab="gemini" class="ai-tab flex-1 py-4 px-2 text-center font-semibold text-gray-500 hover:bg-teal-50 rounded-t-lg transition-colors duration-300">Gemini</button>
+                </div>
+                <div id="ai-content" class="p-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="section-4" class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800">AIと上手に話すコツ</h2>
+            <p class="text-center text-gray-600 mb-12">AIから的確な答えを引き出すには、少しだけ指示に工夫が必要です。これらのコツを試してみてください。</p>
+            <div id="accordion-container" class="max-w-3xl mx-auto space-y-4">
+            </div>
+        </section>
+
+        <section id="section-5" class="mb-24">
+            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800">AIでできること</h2>
+            <p class="text-center text-gray-600 mb-12">AIはあなたの日常の様々な場面で役立ちます。気になる項目をクリックして、具体的な使い方を見てみましょう。</p>
+            <div id="usecase-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="section-6" class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-2 text-gray-800">大切な注意点</h2>
+            <p class="text-center text-gray-600 mb-12">AIを安全に、そして賢く使うために、覚えておいてほしい大切なポイントです。</p>
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg flex items-start">
+                    <span class="text-3xl mr-4">🔒</span>
+                    <div>
+                        <h3 class="font-bold text-lg text-red-800">個人情報の入力は避ける</h3>
+                        <p class="text-red-700">住所、氏名、電話番号などの個人情報は絶対に入力しないでください。入力した内容はAIの学習に使われる可能性があります。</p>
+                    </div>
+                </div>
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-r-lg flex items-start">
+                    <span class="text-3xl mr-4">🤔</span>
+                    <div>
+                        <h3 class="font-bold text-lg text-yellow-800">情報を鵜呑みにしない</h3>
+                        <p class="text-yellow-700">AIは稀に間違った情報を作ることがあります（ハルシネーション）。特に健康やお金に関する大切な情報は、必ず他の情報源でも確認しましょう。</p>
+                    </div>
+                </div>
+                <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg flex items-start">
+                    <span class="text-3xl mr-4">🌱</span>
+                    <div>
+                        <h3 class="font-bold text-lg text-green-800">AIは学習して成長する</h3>
+                        <p class="text-green-700">AIと対話を続けると、あなたの好みや話し方を学習し、より気の利いた相棒になります。使うほどに賢くなる過程も楽しんでみてください。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 border-t mt-12">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2025 生成AI入門ガイド. 気軽にAIとの対話を楽しみましょう。</p>
+        </div>
+    </footer>
+
+    <div id="modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div id="modal-content" class="bg-white rounded-xl max-w-2xl w-full p-8 relative transform scale-95 transition-transform duration-300">
+            <button id="modal-close" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
+            <p id="modal-body" class="text-gray-600 leading-relaxed"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const aiData = {
+                chatgpt: {
+                    title: 'ChatGPT (おしゃべり上手な相談役)',
+                    description: '日常会話、文章作成、アイデア出しが得意です。自然な対話能力に定評があり、世界で最も広く使われています。',
+                    example: '<strong>利用シーン例:</strong> 趣味のガーデニングについて雑談したり、友人への少し凝った手紙の文面を相談したり、新しい趣味のアイデアを出してもらったりする。'
+                },
+                copilot: {
+                    title: 'Copilot (最新情報に強いアシスタント)',
+                    description: 'Microsoft製品（Word, Excel）との連携や、Web上の最新情報を含めたリサーチに強いです。',
+                    example: '<strong>利用シーン例:</strong> 町内会の案内状をWordで作る際の下書きを依頼したり、週末の旅行先の天気やイベント情報をリアルタイムで調べたりする。'
+                },
+                gemini: {
+                    title: 'Gemini (専門知識が豊富な研究者)',
+                    description: '専門的な質問への回答、リサーチ、Googleの各種ツール（Gmail, Googleマップ等）との連携に優れています。',
+                    example: '<strong>利用シーン例:</strong> 持病に関する一般的な知識や健康法について質問したり、Googleマップと連携して目的地までの最適な散歩コースを複数提案してもらったりする。'
+                }
+            };
+
+            const accordionData = [
+                { title: '① 役割を与える', content: '「あなたはプロの編集者です」「経験豊富な旅行プランナーになりきって」のように、AIに専門家としての役割を設定すると、回答の質が格段に上がります。', icon: '🎭' },
+                { title: '② 背景を伝える', content: '「シニア向けのイベントで使います」「小学生の孫に分かりやすく説明したい」など、目的や状況を伝えることで、AIは場面に合わせた表現で回答してくれます。', icon: '背景' },
+                { title: '③ 目的を具体的にする', content: '曖昧な「最近の技術」ではなく、「シニアの健康管理に役立つ、最近のAI技術について3つ教えて」のように、知りたいことを明確に伝えましょう。', icon: '🎯' },
+                { title: '④ 回答の形式を指定する', content: '「箇条書きでまとめて」「500字程度の文章で」など、希望する形を指定すると、手直しする手間が省けます。', icon: '📝' },
+                { title: '⑤ 段階的に質問する', content: '一度に多くを聞かず、「まず日本の世界遺産をリストアップして」→「その中で、高齢者が訪れやすい場所は？」のように、会話を重ねて深掘りしましょう。', icon: '➡️' },
+                { title: '⑥ 複数の条件は箇条書きで', content: '希望が多い場合は、「・目的地：京都」「・時期：11月」のように箇条書きで伝えると、AIが条件を正確に認識しやすくなります。', icon: '箇条書き' },
+                { title: '⑦ 回答を修正・改善させる', content: '一度で完璧な回答でなくても大丈夫。「もっと簡単な言葉で説明して」と対話を続けることで、あなたの理想に近づけてくれます。', icon: '🔄' }
+            ];
+
+            const useCaseData = [
+                { icon: '💬', title: '気軽な会話と情報検索', content: '挨拶や今日の出来事を話すなど、人と話すように気軽に会話してみましょう。「船橋市内で、秋に紅葉が綺麗で、かつシニアが歩きやすい公園は？」のような、複数の条件を組み合わせた複雑な質問にも的確に答えてくれます。' },
+                { icon: '✍️', title: '面倒な文章作成を任せる', content: '町内会のお知らせ、季節の挨拶状、感謝のメッセージなど、目的と要点を伝えるだけで、丁寧で自然な文章の下書きを瞬時に作成します。相手の気分を害さずに断る丁寧な文章なども考えてくれます。' },
+                { icon: '✂️', title: '長い文章を瞬時に要約', content: '市区町村からのお知らせや難しいニュース記事など、読むのが大変な文章も、要点を短くまとめてくれます。全文を読む前に概要を把握でき、時間短縮になります。' },
+                { icon: '🖼️', title: '画像の内容を理解・説明', content: '旅行の写真をアップロードし、「この写真に合う、行きたくなるような紹介文を書いて」と頼むと、写真の雰囲気を認識し、魅力的な文章を生成します。古い写真に写っている物を尋ねることも可能です。' },
+                { icon: '🎨', title: 'イメージ通りの画像を生成', content: '「パソコン操作に苦戦する、コミカルなシニア男性のイラスト」のように文章でイメージを伝えるだけで、プロが描いたような画像を生成できます。絵心は不要で、お知らせの挿絵などに活用できます。' }
+            ];
+
+            const aiTabs = document.querySelectorAll('.ai-tab');
+            const aiContent = document.getElementById('ai-content');
+
+            function updateAiContent(tabName) {
+                const data = aiData[tabName];
+                aiContent.innerHTML = `
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">${data.title}</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">${data.description}</p>
+                    <p class="text-gray-600 bg-gray-50 p-4 rounded-lg border border-gray-200 leading-relaxed">${data.example}</p>
+                `;
+                aiTabs.forEach(t => {
+                    t.classList.remove('text-teal-600', 'bg-teal-50');
+                    t.classList.add('text-gray-500');
+                });
+                const activeTab = document.querySelector(`.ai-tab[data-tab="${tabName}"]`);
+                activeTab.classList.add('text-teal-600', 'bg-teal-50');
+                activeTab.classList.remove('text-gray-500');
+            }
+
+            aiTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    updateAiContent(tab.dataset.tab);
+                });
+            });
+            updateAiContent('chatgpt');
+
+            const accordionContainer = document.getElementById('accordion-container');
+            accordionData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.classList.add('bg-white', 'rounded-xl', 'border', 'border-gray-200', 'overflow-hidden');
+                div.innerHTML = `
+                    <button class="accordion-header w-full flex justify-between items-center text-left p-5 focus:outline-none">
+                        <span class="text-lg font-semibold text-gray-700 flex items-center"><span class="text-xl mr-3">${item.icon}</span>${item.title}</span>
+                        <span class="accordion-icon text-teal-500 text-2xl transform transition-transform duration-300">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="p-5 pt-0 text-gray-600">${item.content}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(div);
+            });
+
+            accordionContainer.addEventListener('click', (e) => {
+                const header = e.target.closest('.accordion-header');
+                if (!header) return;
+
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('.accordion-icon');
+                const isOpen = content.style.maxHeight;
+
+                document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                document.querySelectorAll('.accordion-icon').forEach(i => {
+                    i.textContent = '+';
+                    i.classList.remove('rotate-45');
+                });
+
+                if (!isOpen) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.textContent = '+';
+                    icon.classList.add('rotate-45');
+                }
+            });
+            
+            const useCaseGrid = document.getElementById('usecase-grid');
+            useCaseData.forEach(item => {
+                const card = document.createElement('button');
+                card.className = 'use-case-card bg-white p-6 rounded-xl text-left card-shadow transition-all duration-300 flex flex-col items-center text-center';
+                card.innerHTML = `
+                    <div class="text-5xl mb-4">${item.icon}</div>
+                    <h3 class="text-xl font-bold text-gray-800">${item.title}</h3>
+                `;
+                card.addEventListener('click', () => openModal(item.title, item.content));
+                useCaseGrid.appendChild(card);
+            });
+
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const modalClose = document.getElementById('modal-close');
+
+            function openModal(title, body) {
+                modalTitle.textContent = title;
+                modalBody.innerHTML = body;
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-95');
+            }
+
+            function closeModal() {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modalContent.classList.add('scale-95');
+            }
+
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                     if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                     }
+                });
+            });
+
+            const sections = document.querySelectorAll('section');
+            const headerNavLinks = document.querySelectorAll('#header .nav-link');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                headerNavLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active-nav');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
