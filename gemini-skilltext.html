@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini活用 PC基礎スキルガイド</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Noto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom Keyboard Key Styling */
+        kbd {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-bottom-width: 3px;
+            border-radius: 0.375rem;
+            padding: 0.125rem 0.5rem;
+            font-size: 0.875em;
+            font-weight: 600;
+            color: #475569;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            margin: 0 0.2rem;
+            display: inline-block;
+        }
+
+        /* Checkbox Customization */
+        .task-checkbox {
+            accent-color: #2563eb;
+            width: 1.5rem;
+            height: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .task-checkbox:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Label click effect */
+        .task-label {
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        .task-checkbox:checked + .task-label-text {
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+
+        /* Smooth fade-in animation */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased pb-24">
+
+    <header class="relative bg-brand-900 text-white overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1600&q=80" alt="パソコンを使用するシニア" class="w-full h-full object-cover opacity-30 mix-blend-overlay">
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-900 to-transparent opacity-90"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-6 py-8 lg:py-12">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 drop-shadow-lg">
+                Gemini活用<br class="hidden md:block"> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-teal-300">PC基礎スキルガイド</span>
+            </h1>
+            <p class="text-lg md:text-xl text-blue-100 max-w-2xl leading-relaxed font-medium">
+                AI活用のカギは「PCの基礎体力」。<br>
+                Googleの生成AI「Gemini」の力を最大限に引き出すための、人間側の「的確な指示（プロンプト）」を支える基礎知識をマスターしましょう。
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 -mt-10 relative z-20">
+        
+        <!-- Intro Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-12 fade-in-up" style="animation-delay: 0.1s;">
+            <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                Geminiは単なる検索ツールではなく、対話を重ねて結果を磨き上げていくパートナーです。
+                このキャッチボールをスムーズに行い、AIにストレスなく指示を出すためには、PCの基本操作スキルが土台となります。
+            </p>
+            <div class="bg-blue-50 border border-blue-100 rounded-xl p-6 flex items-start gap-4">
+                <i class="fa-solid fa-circle-info text-brand-500 text-2xl mt-1"></i>
+                <div>
+                    <h3 class="font-bold text-brand-900 mb-2">このガイドの使い方</h3>
+                    <p class="text-gray-600">各項目のチェックボックス（四角い枠）はクリックできます。説明を読み、操作ができるようになったらチェックを入れて、すべてのステップ完了を目指しましょう！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- THE 4 PROMISES (Crucial) -->
+        <section class="mb-16 fade-in-up" style="animation-delay: 0.2s;">
+            <div class="bg-gradient-to-br from-rose-50 to-orange-50 border-2 border-orange-200 rounded-2xl shadow-lg overflow-hidden">
+                <div class="bg-orange-500 text-white px-6 py-4 flex items-center gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                    <h2 class="text-2xl font-bold tracking-wide">【重要】本日の講座を始める前の4つの約束</h2>
+                </div>
+                <div class="p-6 md:p-8">
+                    <p class="text-gray-700 font-medium mb-6">演習をスムーズかつ安全に進めるため、以下の4点だけは必ず守って操作をお願いします。</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-orange-100">
+                            <i class="fa-solid fa-1 text-orange-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-gray-800 text-lg">改行は <kbd>Shift</kbd> + <kbd>Enter</kbd> で行う</span>
+                                <p class="text-gray-500 text-sm mt-1">書き途中の誤送信を防ぐためです。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-orange-100">
+                            <i class="fa-solid fa-2 text-orange-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-gray-800 text-lg">コピー＆ペーストはショートカットキーを使う</span>
+                                <p class="text-gray-500 text-sm mt-1">作業を素早く行い、思考を止めないためです。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-orange-100">
+                            <i class="fa-solid fa-3 text-orange-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-rose-600 text-lg">機密情報は絶対に入力しない</span>
+                                <p class="text-gray-500 text-sm mt-1">情報漏洩を防ぐためです。必ず架空の名称に置き換えましょう。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-orange-100">
+                            <i class="fa-solid fa-4 text-orange-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-gray-800 text-lg">AIの回答をそのまま使わず、必ず人間の目で確認・手直しする</span>
+                                <p class="text-gray-500 text-sm mt-1">AIのミス（もっともらしい嘘）に気づくためです。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 1 -->
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="bg-brand-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-black shadow-md">1</div>
+                <h2 class="text-2xl font-bold text-gray-800">文字入力とキーボードの基本</h2>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border-l-4 border-brand-500">
+                <p class="text-gray-600 mb-6">AIへの指示は、主に文字（テキスト）で行います。ここをスムーズにできるかが、AI活用の第一歩です。</p>
+                
+                <div class="space-y-6">
+                    <label class="flex items-start gap-4 task-label group">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">ブラインドタッチを意識する（推奨）</span>
+                            <span class="text-gray-600 text-sm">手元を見ずに画面を見て打てると、画面に次々と表示されるAIの返答を読みながら思考を止めずに済みます。完璧でなくても構いません。キーボードの基本位置（ホームポジション）に指を置くことを意識しましょう。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-4 task-label group bg-rose-50 p-4 rounded-xl border border-rose-100">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-rose-700 text-lg block mb-1">「改行」と「送信」の違いを理解する（超重要！）</span>
+                            <span class="text-gray-700 text-sm">
+                                Geminiの入力画面では、<strong><kbd>Enter</kbd> キーを1回押すとそのまま「送信」されてしまいます。</strong><br>
+                                文章の途中で改行したい場合は、必ず <strong><kbd>Shift</kbd> + <kbd>Enter</kbd></strong> を押すようにしてください。今日一番大切な操作です！
+                            </span>
+                        </div>
+                    </label>
+
+                    <div class="pt-4 border-t border-gray-100">
+                        <h4 class="font-bold text-lg mb-4"><i class="fa-regular fa-keyboard mr-2 text-brand-500"></i>必須ショートカットキーを使えるようにする</h4>
+                        <p class="text-sm text-gray-500 mb-4">マウス操作より圧倒的に素早く操作できます。以下の操作は必ずマスターしましょう。</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex items-center gap-3 task-label p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <input type="checkbox" class="task-checkbox">
+                                <div class="task-label-text flex-1">
+                                    <span class="font-bold mr-2">コピー:</span> <kbd>Ctrl</kbd> + <kbd>C</kbd>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 task-label p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <input type="checkbox" class="task-checkbox">
+                                <div class="task-label-text flex-1">
+                                    <span class="font-bold mr-2">貼り付け:</span> <kbd>Ctrl</kbd> + <kbd>V</kbd>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 task-label p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <input type="checkbox" class="task-checkbox">
+                                <div class="task-label-text flex-1">
+                                    <span class="font-bold mr-2">元に戻す:</span> <kbd>Ctrl</kbd> + <kbd>Z</kbd>
+                                    <p class="text-xs text-gray-500 mt-1">間違えて消した時の命綱</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 task-label p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <input type="checkbox" class="task-checkbox">
+                                <div class="task-label-text flex-1">
+                                    <span class="font-bold mr-2">すべて選択:</span> <kbd>Ctrl</kbd> + <kbd>A</kbd>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 task-label p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                                <input type="checkbox" class="task-checkbox">
+                                <div class="task-label-text flex-1">
+                                    <span class="font-bold mr-2">ページ内検索:</span> <kbd>Ctrl</kbd> + <kbd>F</kbd>
+                                    <p class="text-xs text-gray-500 mt-1">長い回答からキーワードを探す</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 task-label p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition border border-brand-200">
+                                <input type="checkbox" class="task-checkbox">
+                                <div class="task-label-text flex-1">
+                                    <span class="font-bold mr-2 text-brand-600">クリップボード履歴:</span> <kbd>Win</kbd> + <kbd>V</kbd>
+                                    <p class="text-xs text-gray-500 mt-1">過去のコピーを遡って貼り付け</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 task-label p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition border border-brand-200 md:col-span-2">
+                                <input type="checkbox" class="task-checkbox">
+                                <div class="task-label-text flex-1">
+                                    <span class="font-bold mr-2 text-brand-600">画面分割（スナップ）:</span> <kbd>Win</kbd> + <kbd>←</kbd> / <kbd>→</kbd>
+                                    <p class="text-xs text-gray-500 mt-1">画面の左半分にGemini、右半分にWord資料を開くなど、並行作業に必須</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 task-label p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition md:col-span-2">
+                                <input type="checkbox" class="task-checkbox">
+                                <div class="task-label-text flex-1">
+                                    <span class="font-bold mr-2">スクリーンショット:</span> <kbd>Win</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>
+                                    <p class="text-xs text-gray-500 mt-1">画面の一部を切り取ってGeminiに貼り付け、「この画像を説明して」と指示できます</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 2 -->
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="bg-teal-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-black shadow-md">2</div>
+                <h2 class="text-2xl font-bold text-gray-800">文章を編集する力</h2>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border-l-4 border-teal-500">
+                <p class="text-gray-600 mb-6">AIから良い回答を引き出し、それを自分の仕事で使える形に整えるスキルです。</p>
+                
+                <div class="space-y-6">
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">プロンプト（指示）を分かりやすく整理する</span>
+                            <span class="text-gray-600 text-sm block mb-3">思いついたことをダラダラと長い文章で書くのは避けましょう。箇条書き（「・」など）や見出し（「【テーマ】」「【条件】」など）を使って情報を整理すると、AIの回答精度が格段に上がります。</span>
+                            <div class="bg-gray-50 p-4 rounded-lg text-sm border border-gray-200">
+                                <span class="text-gray-500 text-xs font-bold block mb-1">良い例：</span>
+                                【テーマ】新商品のプロモーション企画<br>
+                                【時間】1時間<br>
+                                【参加者】5人<br>
+                                上記の条件で会議のアジェンダを作成してください。
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">AIの回答を整形し、手直しする</span>
+                            <span class="text-gray-600 text-sm">
+                                AIの作った文章をコピーした際、不要な改行や記号が含まれることがあります。また、AIは時々もっともらしい「嘘（誤情報）」をつくことがあります。そのままコピペせず、<strong>必ず自分の目で内容を確認し、表現を調整（手直し）</strong>しましょう。「AIは下書き担当、最終確認は人間」です。
+                            </span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="bg-indigo-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-black shadow-md">3</div>
+                <h2 class="text-2xl font-bold text-gray-800">ブラウザとインターネットの基本操作</h2>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border-l-4 border-indigo-500">
+                <p class="text-gray-600 mb-6">Geminiは専用ソフトではなく、Webブラウザ（Google ChromeやEdgeなど）上で動きます。</p>
+                
+                <div class="space-y-6">
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">タブとウィンドウを使い分ける</span>
+                            <span class="text-gray-600 text-sm">ブラウザの「新しいタブ（＋ボタン）」を開き、Geminiの画面とGoogle検索の画面を並行して使いましょう。AIの回答を待ちながら、別タブで事実確認（ファクトチェック）を行うのが賢い使い方です。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">ブックマーク（お気に入り）に登録する</span>
+                            <span class="text-gray-600 text-sm">Geminiのページをブックマークバーに登録し、いつでもワンクリックですぐに開けるように準備しておきましょう。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">ページの再読み込み（リロード）ができる</span>
+                            <span class="text-gray-600 text-sm">AIが文章を作っている途中で画面が固まった時は焦らず、キーボードの <kbd>F5</kbd> キーを押すか、ブラウザの「更新ボタン」を押しましょう。多くの場合、エラーが解消されて続きから再開できます。</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 4 -->
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="bg-sky-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-black shadow-md">4</div>
+                <h2 class="text-2xl font-bold text-gray-800">クラウドの理解とファイル操作</h2>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border-l-4 border-sky-500">
+                <p class="text-gray-600 mb-6">自分のパソコン（ローカル）とインターネット上（クラウド）の違いを理解し、データを活用します。</p>
+                
+                <div class="space-y-6">
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">「クラウド」と「ローカル」の違いを理解する</span>
+                            <span class="text-gray-600 text-sm">Geminiの頭脳はあなたのPCの中（ローカル）ではなく、インターネット上のサーバー（クラウド）にあります。データはクラウドに保存されるため、会社のPCで行った作業の続きを、スマホから同じアカウントでログインして再開できます。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">ファイルの保存場所（ダウンロードフォルダ）を把握する</span>
+                            <span class="text-gray-600 text-sm">AIに作ってもらった画像を保存した際、「どこに保存されたか分からない」と迷子にならないよう、「エクスプローラー」から「ダウンロード」フォルダを開けるようにしましょう。ブラウザの履歴（<kbd>Ctrl</kbd> + <kbd>J</kbd>）も便利です。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">ドラッグ＆ドロップでファイルをアップロードする</span>
+                            <span class="text-gray-600 text-sm">GeminiにPDFやExcelを読み込ませたい時は、エクスプローラー上のファイルをマウスで「左クリックしたままつかみ」、Geminiのチャット入力欄まで「引きずって落とす（ドラッグ＆ドロップ）」操作を習得しましょう。</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 5 -->
+        <section class="mb-12">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="bg-purple-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-black shadow-md">5</div>
+                <h2 class="text-2xl font-bold text-gray-800">アカウント管理とセキュリティ</h2>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border-l-4 border-purple-600 relative overflow-hidden">
+                <!-- Decorative background icon -->
+                <i class="fa-solid fa-shield-halved absolute -bottom-10 -right-10 text-9xl text-purple-50 opacity-50 pointer-events-none"></i>
+                
+                <p class="text-gray-600 mb-6 relative z-10">Geminiを安全に利用し、情報漏洩などのトラブルを防ぐための<strong>極めて重要</strong>な知識です。</p>
+                
+                <div class="space-y-6 relative z-10">
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">Googleアカウントを適切に管理する</span>
+                            <span class="text-gray-600 text-sm">Geminiの利用にはGoogleアカウントが必要です。会話履歴はアカウントに紐づくため、IDとパスワードは厳重に管理してください。</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-rose-600 text-lg block mb-1">機密情報・個人情報を絶対に入力しない（超重要！）</span>
+                            <span class="text-gray-600 text-sm block mb-4">無料版のAIツールでは、入力データがAIの学習に利用される可能性があります。顧客の個人情報、会社の未公開データ、クレジットカード情報などは絶対に入力してはいけません。</span>
+                            
+                            <div class="bg-purple-50 p-5 rounded-xl border border-purple-100">
+                                <h4 class="font-bold text-purple-900 mb-3"><i class="fa-solid fa-user-secret mr-2"></i>対策：マスキング（匿名化）</h4>
+                                <p class="text-sm text-gray-700 mb-3">業務の文章をAIに添削させたい場合は、入力前に必ず以下のように情報を伏せてください。</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="bg-white p-3 rounded shadow-sm border-l-4 border-rose-400">
+                                        <span class="text-xs font-bold text-rose-500 block mb-1"><i class="fa-solid fa-xmark mr-1"></i>NG（そのまま入力）</span>
+                                        <p class="text-sm">「株式会社トヨタの山田部長への謝罪文を書いて」</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded shadow-sm border-l-4 border-teal-400">
+                                        <span class="text-xs font-bold text-teal-600 block mb-1"><i class="fa-solid fa-check mr-1"></i>OK（マスキング後）</span>
+                                        <p class="text-sm">「A社のB部長への謝罪文のテンプレートを書いて」</p>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-3">※固有名詞を「A社」「B氏」に置き換えたり、具体的な金額を「〇〇円」とぼかしたりする癖をつけましょう。</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 6 -->
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="bg-amber-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-black shadow-md">6</div>
+                <h2 class="text-2xl font-bold text-gray-800">自力で解決する力（検索力）</h2>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-6 md:p-8 border-l-4 border-amber-500">
+                <p class="text-gray-600 mb-6">AIツールは進化が激しく、画面のレイアウトや使い方が頻繁に変わります。</p>
+                
+                <div class="space-y-6">
+                    <label class="flex items-start gap-4 task-label">
+                        <input type="checkbox" class="task-checkbox mt-1">
+                        <div class="task-label-text">
+                            <span class="font-bold text-lg block mb-1">分からないことは「ググる」習慣をつける</span>
+                            <span class="text-gray-600 text-sm">エラーが出た場合や操作が分からない時は、誰かに聞く前に「Gemini ログインできない」「Gemini ファイル 制限」など、複数のキーワードを組み合わせてWeb検索（ググる）しましょう。<strong>「適切なキーワードを選んで検索する力」は、そのまま「AIに的確な指示（プロンプト）を出す力」に繋がります。</strong></span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wrap up -->
+        <div class="text-center py-8 mb-20">
+            <div class="inline-block bg-white p-6 rounded-2xl shadow-lg border border-gray-100 max-w-2xl">
+                <i class="fa-solid fa-award text-5xl text-amber-400 mb-4 drop-shadow-md"></i>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">お疲れ様でした！</h3>
+                <p class="text-gray-600">
+                    これらのチェック項目がすべて埋まれば、あなたはGeminiをフル活用するための準備が万端に整っています。<br>
+                    さあ、AIとの対話を始めましょう！
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Progress Bar Widget -->
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50 transition-transform duration-300" id="progress-container">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <div class="font-bold text-gray-700 flex items-center gap-2 min-w-[120px]">
+                <i class="fa-solid fa-list-check text-brand-500"></i>
+                <span>進捗: <span id="checked-count" class="text-brand-600 text-xl">0</span>/<span id="total-count">0</span></span>
+            </div>
+            <div class="flex-1 bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-brand-400 to-brand-600 h-3 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+            </div>
+            <div id="completion-msg" class="text-sm font-bold text-teal-600 hidden whitespace-nowrap">
+                <i class="fa-solid fa-check-circle"></i> 準備完了！
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic for Checkboxes and Progress -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const totalCountEl = document.getElementById('total-count');
+            const checkedCountEl = document.getElementById('checked-count');
+            const progressBar = document.getElementById('progress-bar');
+            const completionMsg = document.getElementById('completion-msg');
+            
+            const total = checkboxes.length;
+            totalCountEl.textContent = total;
+
+            function updateProgress() {
+                const checkedCount = document.querySelectorAll('.task-checkbox:checked').length;
+                checkedCountEl.textContent = checkedCount;
+                
+                const percentage = (checkedCount / total) * 100;
+                progressBar.style.width = `${percentage}%`;
+
+                // Color changes based on progress
+                if (percentage === 100) {
+                    progressBar.classList.remove('from-brand-400', 'to-brand-600');
+                    progressBar.classList.add('from-teal-400', 'to-teal-600');
+                    completionMsg.classList.remove('hidden');
+                    completionMsg.classList.add('animate-bounce');
+                } else {
+                    progressBar.classList.add('from-brand-400', 'to-brand-600');
+                    progressBar.classList.remove('from-teal-400', 'to-teal-600');
+                    completionMsg.classList.add('hidden');
+                    completionMsg.classList.remove('animate-bounce');
+                }
+            }
+
+            // Load saved progress from localStorage
+            checkboxes.forEach((cb, index) => {
+                // Assign an ID if it doesn't have one to connect with labels correctly
+                if (!cb.id) cb.id = `task-cb-${index}`;
+                // Link the parent label to the checkbox ID
+                const parentLabel = cb.closest('.task-label');
+                if (parentLabel) parentLabel.setAttribute('for', cb.id);
+
+                // Load state
+                const savedState = localStorage.getItem(`gemini-guide-cb-${index}`);
+                if (savedState === 'true') {
+                    cb.checked = true;
+                }
+
+                // Add event listener
+                cb.addEventListener('change', (e) => {
+                    localStorage.setItem(`gemini-guide-cb-${index}`, e.target.checked);
+                    updateProgress();
+                });
+            });
+
+            // Initial update
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
