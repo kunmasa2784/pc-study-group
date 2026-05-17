@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini学習のためのPC基礎スキル演習問題</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        /* カスタムチェックボックスのスタイル */
+        .task-checkbox {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.5em;
+            height: 1.5em;
+            border: 2px solid #cbd5e1;
+            border-radius: 0.25em;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .task-checkbox::before {
+            content: "";
+            width: 0.85em;
+            height: 0.85em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: transform;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .task-checkbox:checked {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        .task-checkbox:checked::before {
+            transform: scale(1);
+        }
+        /* キーボードショートカットのスタイル */
+        kbd {
+            background-color: #e5e7eb;
+            border: 1px solid #d1d5db;
+            border-bottom: 2px solid #9ca3af;
+            border-radius: 0.25rem;
+            padding: 0.15rem 0.4rem;
+            font-family: monospace;
+            font-size: 0.875em;
+            color: #1f2937;
+        }
+        /* 完了した問題のスタイル */
+        .task-completed .task-text {
+            color: #9ca3af;
+        }
+        .task-completed .task-title {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- ヘッダー（画像とテキストを並べるレイアウトに変更） -->
+    <header class="bg-white border-b border-gray-200 shadow-sm pt-12 pb-8">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                <!-- パソコンの写真部分（角丸でシャドウ付き） -->
+                <div class="flex-shrink-0 w-full md:w-1/3">
+                    <div class="relative rounded-2xl overflow-hidden shadow-lg border-4 border-white transform transition duration-500 hover:scale-105">
+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="ノートパソコン" class="w-full h-auto object-cover aspect-video md:aspect-square lg:aspect-[4/3]">
+                        <!-- 画像上の装飾 -->
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                            <span class="text-white text-sm font-bold bg-blue-600 px-2 py-1 rounded">PC Skills</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- テキスト部分 -->
+                <div class="flex-1 text-center md:text-left mt-4 md:mt-0">
+                    <div class="inline-flex items-center bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold mb-4 border border-blue-200">
+                        <i class="fa-solid fa-graduation-cap mr-2"></i>入門から実践まで
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
+                        Gemini学習のための<br>
+                        <span class="text-blue-600 relative inline-block">
+                            PC基礎スキル演習問題
+                            <!-- テキスト下の装飾線 -->
+                            <svg class="absolute w-full h-3 -bottom-1 left-0 text-blue-200 opacity-70 z-[-1]" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                <path d="M0,5 Q50,10 100,5" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"></path>
+                            </svg>
+                        </span>
+                    </h1>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                        AIを使いこなすための第一歩！<br>
+                        テキストで学んだ内容を、実際にPCを操作して確認してみましょう。<br>
+                        各ステップの問題をクリアしたら、チェックボックスにチェックを入れて進んでください。
+                    </p>
+                    
+                    <div class="flex justify-center md:justify-start gap-4 text-sm text-gray-500">
+                        <span class="flex items-center"><i class="fa-solid fa-clock mr-1"></i> 所要時間目安: 30分</span>
+                        <span class="flex items-center"><i class="fa-solid fa-layer-group mr-1"></i> 全6ステップ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- プログレスバー (固定表示) -->
+    <div class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200 py-3">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <span class="font-bold text-gray-700">学習進捗</span>
+            <div class="flex-1 mx-4">
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div id="progress-bar" class="bg-green-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+            <span id="progress-text" class="font-bold text-blue-600 w-12 text-right">0%</span>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- STEP 1 -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+            <div class="bg-blue-50 border-b border-gray-200 px-6 py-4">
+                <h2 class="text-xl font-bold text-blue-800 flex items-center">
+                    <span class="bg-blue-600 text-white text-sm px-3 py-1 rounded-full mr-3">STEP 1</span>
+                    文字入力とキーボードの基本
+                </h2>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- 問題 1 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題1（コピペの練習）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            メモ帳（またはWord）を開き、「本日はGeminiの学習を行います」と入力してください。<br>
+                            その文章をマウスを使わずにショートカットキー（<kbd>Ctrl + C</kbd>）でコピーし、次の行にショートカットキー（<kbd>Ctrl + V</kbd>）で貼り付けてください。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 2 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題2（改行の練習）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            Geminiのチャット入力欄で、「以下の3つのアイデアを出してください。」と入力した直後に、送信せずに改行（<kbd>Shift + Enter</kbd>）を行ってください。<br>
+                            その下の行に「1.」「2.」「3.」と箇条書きの番号を改行しながら入力してみてください。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 3 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題3（クリップボード履歴と画面分割）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            <kbd>Win + V</kbd> を押し、クリップボード履歴が表示されるか確認してください（初回は「有効にする」をクリック）。先ほどコピーした文章を選んで貼り付けてみましょう。<br>
+                            その後、<kbd>Win + 左矢印</kbd> を押し、画面の左半分にGemini、右半分にメモ帳を並べる画面分割を試してください。
+                        </p>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <!-- STEP 2 -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+            <div class="bg-green-50 border-b border-gray-200 px-6 py-4">
+                <h2 class="text-xl font-bold text-green-800 flex items-center">
+                    <span class="bg-green-600 text-white text-sm px-3 py-1 rounded-full mr-3">STEP 2</span>
+                    文章を編集する力
+                </h2>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- 問題 1 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題1（プロンプトの構造化）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed mb-2">
+                            以下のダラダラとした文章を、「見出し」と「箇条書き」を使ってAIが読みやすい構造にメモ帳で整理して書き直してください。
+                        </p>
+                        <div class="bg-gray-100 p-3 rounded-md text-gray-700 text-sm border border-gray-200 task-text">
+                            「明日の会議は10時からで、場所は第1会議室です。持ち物はノートPCと筆記用具で、議題は新プロジェクトの立ち上げについてです。」
+                        </div>
+                    </div>
+                </label>
+                <!-- 問題 2 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題2（AIの回答の貼り付け）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            Geminiに「日本の有名な観光地を3つ教えて」と質問し、生成された回答のテキストをすべてコピーしてください。<br>
+                            コピーした内容をメモ帳（またはWord）に貼り付けてください。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 3 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題3（手直しと整形）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            問題2で貼り付けた文章の中に、AI特有の記号（<kbd>**</kbd> や <kbd>*</kbd> など）が含まれていれば削除し、ビジネスメールの本文としてそのまま使えるような自然な文章に整えて（手直しして）ください。
+                        </p>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+            <div class="bg-purple-50 border-b border-gray-200 px-6 py-4">
+                <h2 class="text-xl font-bold text-purple-800 flex items-center">
+                    <span class="bg-purple-600 text-white text-sm px-3 py-1 rounded-full mr-3">STEP 3</span>
+                    ブラウザとインターネットの基本操作
+                </h2>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- 問題 1 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題1（タブの操作）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            現在Geminiを開いているブラウザで「新しいタブ」を開き、Googleの検索トップページを表示してください。<br>
+                            Geminiの画面とGoogle検索の画面を、タブをクリックして素早く切り替えてみましょう。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 2 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題2（ブックマーク登録）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            Geminiのチャット画面を開いた状態で、ブラウザの「ブックマーク（お気に入り）」に追加する操作を行ってください。<br>
+                            ブックマークバー（またはメニュー）から、すぐにGeminiを開けるようになったか確認してください。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 3 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題3（ページのリロード）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            Geminiの画面を開いた状態で、キーボードの <kbd>F5</kbd> キー（またはブラウザの更新ボタン）を押し、ページが正しく再読み込みされることを確認してください。
+                        </p>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <!-- STEP 4 -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+            <div class="bg-yellow-50 border-b border-gray-200 px-6 py-4">
+                <h2 class="text-xl font-bold text-yellow-800 flex items-center">
+                    <span class="bg-yellow-500 text-white text-sm px-3 py-1 rounded-full mr-3">STEP 4</span>
+                    クラウドの理解とファイル操作
+                </h2>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- 問題 1 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題1（ファイルのダウンロード）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            Geminiに「テスト用のダミーデータを表形式で5件作成して」と指示してください。<br>
+                            出力された表の右上にある「Googleスプレッドシートにエクスポート」を試すか、表の内容をコピーしてExcelに貼り付け、ファイルとしてPCに保存してください。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 2 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題2（保存場所の確認）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            エクスプローラー（フォルダのアイコン）を開き、ご自身のPCの「ダウンロード」フォルダ（または保存したフォルダ）を開いて、問題1のファイルがどこに保存されたかを見つけてください。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 3 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題3（ドラッグ＆ドロップ）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            デスクトップまたはダウンロードフォルダにある、任意の画像ファイル（またはPDF・Excelファイル等）を、マウスでクリックしたままGeminiのチャット入力欄まで引きずっていき、指を離して（ドラッグ＆ドロップ）添付できるか確認してください。
+                        </p>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <!-- STEP 5 -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+            <div class="bg-red-50 border-b border-gray-200 px-6 py-4">
+                <h2 class="text-xl font-bold text-red-800 flex items-center">
+                    <span class="bg-red-500 text-white text-sm px-3 py-1 rounded-full mr-3">STEP 5</span>
+                    アカウント管理とセキュリティ
+                </h2>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- 問題 1 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題1（ログイン情報の確認）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            メモ帳を開き、ご自身がGeminiのログインに使用しているGoogleアカウントのメールアドレスを正確にタイピングできるか確認してください。<br>
+                            <span class="text-red-500 text-sm">※セキュリティのため、パスワードは入力しないでください</span>
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 2 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題2（機密情報の仕分け）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed mb-2">
+                            以下のA〜Dの情報を、「AIに入力しても良いもの（〇）」と「入力してはいけない機密情報（×）」に分けてください。
+                        </p>
+                        <ul class="list-none space-y-2 text-gray-700 bg-gray-50 p-4 rounded-md border border-gray-200 task-text">
+                            <li><span class="font-bold">A:</span> 今日の夕食のレシピのアイデア</li>
+                            <li><span class="font-bold">B:</span> 取引先である株式会社〇〇の担当者の氏名と携帯番号</li>
+                            <li><span class="font-bold">C:</span> Yahoo!ニュースなどで一般公開されている記事のURL</li>
+                            <li><span class="font-bold">D:</span> 自社で来月発表予定の、未公開の新製品の仕様書</li>
+                        </ul>
+                    </div>
+                </label>
+                <!-- 問題 3 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題3（マスキングの練習）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed mb-2">
+                            以下の文章をAIに分析させたい場合、情報漏洩を防ぐためにどのように伏せ字（マスキング）をすればよいか、メモ帳に修正案を作ってみてください。
+                        </p>
+                        <div class="bg-gray-100 p-3 rounded-md text-gray-700 text-sm border border-gray-200 task-text">
+                            「〇〇県〇〇市にお住まいの、山田太郎様（電話：090-XXXX-XXXX）から、弊社の商品『スーパーお掃除ロボット』についてクレームがありました。」
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <!-- STEP 6 -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8 overflow-hidden">
+            <div class="bg-teal-50 border-b border-gray-200 px-6 py-4">
+                <h2 class="text-xl font-bold text-teal-800 flex items-center">
+                    <span class="bg-teal-600 text-white text-sm px-3 py-1 rounded-full mr-3">STEP 6</span>
+                    自力で解決する力（検索力）
+                </h2>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- 問題 1 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題1（検索キーワードの考案）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            Geminiを使っていて「添付しようとしたExcelファイルがエラーで読み込めない」というトラブルが起きました。<br>
+                            解決策をGoogleで検索するためには、どのようなキーワード（複数の単語の組み合わせ）で検索欄に入力すればよいか、3つ以上の単語を考えてみてください。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 2 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題2（エラーの調査）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            ブラウザでWebサイトを見ているとき、画面に「404 Not Found」というエラーメッセージが出ました。<br>
+                            このエラーがどういう意味なのか、Google検索またはGeminiを使って調べてみてください。
+                        </p>
+                    </div>
+                </label>
+                <!-- 問題 3 -->
+                <label class="task-item flex items-start gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                    <div class="pt-1">
+                        <input type="checkbox" class="task-checkbox">
+                    </div>
+                    <div>
+                        <h3 class="task-title font-bold text-lg mb-2">問題3（環境の確認）</h3>
+                        <p class="task-text text-gray-600 leading-relaxed">
+                            ご自身が今使っているブラウザの名称（Chrome、Edgeなど）と、その「バージョンの確認方法」をWeb検索で調べ、実際に自分のブラウザが最新版になっているか確認してみてください。
+                        </p>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <!-- レビューセクション -->
+        <section class="bg-white rounded-xl shadow-sm border border-gray-200 mt-12 overflow-hidden">
+            <div class="bg-gray-800 text-white px-6 py-4">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fa-solid fa-star text-yellow-400 mr-2"></i>
+                    学習者のレビュー
+                </h2>
+            </div>
+            
+            <div class="p-6">
+                <!-- レビュー表示エリア -->
+                <div id="reviews-container" class="space-y-4 mb-8">
+                    <!-- ダミーレビュー 1 -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="font-bold text-gray-800"><i class="fa-solid fa-user-circle text-gray-400 mr-2"></i>A.S さん</div>
+                            <div class="text-yellow-400 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm">ショートカットキーをあまり使っていなかったので、この機会に練習できてとても良かったです。画面分割（Win+左）はすぐに業務で使えそうです！</p>
+                    </div>
+                    <!-- ダミーレビュー 2 -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="font-bold text-gray-800"><i class="fa-solid fa-user-circle text-gray-400 mr-2"></i>M.K さん</div>
+                            <div class="text-yellow-400 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm">機密情報の仕分け問題がハッとさせられました。AIを便利に使うためにもセキュリティの意識は大事ですね。復習になりました。</p>
+                    </div>
+                </div>
+
+                <!-- レビュー投稿フォーム -->
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="font-bold text-lg mb-4 text-gray-800">演習の感想を投稿する</h3>
+                    <form id="review-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">お名前（ニックネーム可）</label>
+                            <input type="text" id="reviewer-name" required class="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="例：山田 太郎">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">評価</label>
+                            <div class="flex items-center space-x-1" id="star-rating">
+                                <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="1"><i class="fa-solid fa-star"></i></button>
+                                <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="2"><i class="fa-solid fa-star"></i></button>
+                                <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="3"><i class="fa-solid fa-star"></i></button>
+                                <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="4"><i class="fa-solid fa-star"></i></button>
+                                <button type="button" class="star-btn text-2xl text-gray-300 hover:text-yellow-400 focus:outline-none" data-rating="5"><i class="fa-solid fa-star"></i></button>
+                            </div>
+                            <input type="hidden" id="rating-value" value="0" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">感想・コメント</label>
+                            <textarea id="review-text" required rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="演習をやってみてどうでしたか？"></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-md transition-colors shadow-sm">
+                            <i class="fa-solid fa-paper-plane mr-2"></i>レビューを投稿
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- プログレスバーのロジック ---
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const totalTasks = checkboxes.length;
+
+            function updateProgress() {
+                const checkedCount = document.querySelectorAll('.task-checkbox:checked').length;
+                const percentage = Math.round((checkedCount / totalTasks) * 100);
+                
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${percentage}%`;
+
+                // 完了時のスタイル適用
+                checkboxes.forEach(cb => {
+                    const taskItem = cb.closest('.task-item');
+                    if (cb.checked) {
+                        taskItem.classList.add('task-completed');
+                        taskItem.classList.remove('bg-white');
+                        taskItem.classList.add('bg-gray-50');
+                    } else {
+                        taskItem.classList.remove('task-completed');
+                        taskItem.classList.add('bg-white');
+                        taskItem.classList.remove('bg-gray-50');
+                    }
+                });
+
+                // 100%達成時のお祝いメッセージ
+                if (percentage === 100 && checkedCount === totalTasks) {
+                    setTimeout(() => {
+                        // alertの代わりに使用
+                        const msg = document.createElement('div');
+                        msg.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg transform transition-all duration-500 translate-y-0 z-50';
+                        msg.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i>すべての演習をクリアしました！お疲れ様でした！';
+                        document.body.appendChild(msg);
+                        setTimeout(() => {
+                            msg.style.opacity = '0';
+                            setTimeout(() => msg.remove(), 500);
+                        }, 4000);
+                    }, 500);
+                }
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', updateProgress);
+            });
+
+
+            // --- レビューの星評価ロジック ---
+            const starBtns = document.querySelectorAll('.star-btn');
+            const ratingInput = document.getElementById('rating-value');
+
+            starBtns.forEach(btn => {
+                // ホバー時のエフェクト
+                btn.addEventListener('mouseover', function() {
+                    const rating = this.getAttribute('data-rating');
+                    highlightStars(rating);
+                });
+
+                // ホバー外れたら現在の選択値に戻す
+                btn.addEventListener('mouseout', function() {
+                    highlightStars(ratingInput.value);
+                });
+
+                // クリックして評価を確定
+                btn.addEventListener('click', function() {
+                    const rating = this.getAttribute('data-rating');
+                    ratingInput.value = rating;
+                    highlightStars(rating);
+                });
+            });
+
+            function highlightStars(rating) {
+                starBtns.forEach(btn => {
+                    const btnRating = btn.getAttribute('data-rating');
+                    if (btnRating <= rating) {
+                        btn.classList.remove('text-gray-300');
+                        btn.classList.add('text-yellow-400');
+                    } else {
+                        btn.classList.add('text-gray-300');
+                        btn.classList.remove('text-yellow-400');
+                    }
+                });
+            }
+
+            // --- レビュー送信ロジック ---
+            const reviewForm = document.getElementById('review-form');
+            const reviewsContainer = document.getElementById('reviews-container');
+
+            reviewForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('reviewer-name').value;
+                const rating = document.getElementById('rating-value').value;
+                const text = document.getElementById('review-text').value;
+
+                if (rating === "0") {
+                    // カスタムメッセージ表示
+                    const msg = document.createElement('div');
+                    msg.className = 'text-red-500 text-sm mt-2';
+                    msg.textContent = '星を選択して評価してください。';
+                    this.insertBefore(msg, this.lastElementChild);
+                    setTimeout(() => msg.remove(), 3000);
+                    return;
+                }
+
+                // 星のHTML生成
+                let starsHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= rating) {
+                        starsHtml += '<i class="fa-solid fa-star"></i>';
+                    } else {
+                        starsHtml += '<i class="fa-regular fa-star"></i>';
+                    }
+                }
+
+                // 新しいレビュー要素の作成
+                const newReview = document.createElement('div');
+                newReview.className = 'bg-blue-50 p-4 rounded-lg border border-blue-100 animate-fade-in';
+                newReview.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="font-bold text-gray-800"><i class="fa-solid fa-user-circle text-blue-400 mr-2"></i>${escapeHtml(name)} さん</div>
+                        <div class="text-yellow-400 text-sm">
+                            ${starsHtml}
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">${escapeHtml(text).replace(/\n/g, '<br>')}</p>
+                    <div class="mt-2 text-xs text-gray-400">たった今</div>
+                `;
+
+                // リストの先頭に追加
+                reviewsContainer.insertBefore(newReview, reviewsContainer.firstChild);
+
+                // フォームのリセット
+                reviewForm.reset();
+                ratingInput.value = "0";
+                highlightStars(0);
+
+                // 完了メッセージ
+                const btn = this.querySelector('button[type="submit"]');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check mr-2"></i>投稿しました';
+                btn.classList.add('bg-green-600', 'hover:bg-green-700');
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                    btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                }, 3000);
+            });
+
+            // XSS対策用の簡易エスケープ関数
+            function escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+            
+            // 初回表示時の進捗計算
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
